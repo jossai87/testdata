@@ -1,0 +1,15 @@
+trial_id,drug_name,start_date,end_date,phase,num_participants,success_rate,outcome
+1,CardioGuard,2020-01-15,2021-01-14,2,300,0.72,Positive
+2,CardioGuard,2021-03-01,2022-02-28,3,500,0.78,Positive
+3,CardioGuard,2022-04-15,2023-04-14,3,750,0.8,Positive
+4,NeuroClear,2020-06-01,2021-05-31,2,250,0.65,Medium
+5,NeuroClear,2021-08-15,2022-08-14,2,400,0.68,Medium
+6,ArthriEase,2020-09-10,2021-09-09,2,350,0.73,Positive
+7,ArthriEase,2021-11-01,2022-10-31,3,600,0.75,Positive
+8,ArthriEase,2022-12-15,2023-12-14,3,800,0.77,Positive
+9,DiabetAid,2021-01-20,2022-01-19,2,300,0.55,Poor
+10,DiabetAid,2022-03-01,2023-02-28,2,500,0.62,Medium
+11,CholesterEx,2020-11-05,2021-11-04,2,400,0.75,Positive
+12,CholesterEx,2022-01-10,2023-01-09,3,650,0.78,Positive
+13,CholesterEx,2023-03-15,2024-03-14,3,900,0.5,Poor
+14,PainAway,2022-05-01,2023-04-30,1,100,0.7,Positive

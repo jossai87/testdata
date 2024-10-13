@@ -1,0 +1,47 @@
+effect_id,trial_id,effect_name,severity,frequency
+1,1,Headache,2,0.12
+2,1,Dizziness,2,0.08
+3,2,Nausea,2,0.06
+4,2,Fatigue,1,0.1
+5,2,Dry mouth,1,0.04
+6,3,Headache,2,0.11
+7,3,Dizziness,2,0.07
+8,3,Nausea,2,0.05
+9,4,Insomnia,3,0.15
+10,4,Anxiety,3,0.13
+11,4,Tremors,2,0.1
+12,4,Weight loss,2,0.08
+13,5,Insomnia,3,0.14
+14,5,Anxiety,3,0.12
+15,5,Tremors,2,0.09
+16,6,Joint pain,2,0.2
+17,6,Swelling,2,0.15
+18,6,Rash,2,0.1
+19,7,Joint pain,2,0.18
+20,7,Swelling,2,0.14
+21,7,Rash,2,0.09
+22,7,Nausea,2,0.07
+23,8,Joint pain,2,0.16
+24,8,Swelling,2,0.12
+25,8,Rash,2,0.08
+26,9,Hypoglycemia,3,0.08
+27,9,Weight gain,2,0.12
+28,9,Nausea,2,0.1
+29,10,Hypoglycemia,3,0.07
+30,10,Weight gain,2,0.11
+31,10,Nausea,2,0.08
+32,10,Dizziness,2,0.06
+33,11,Muscle pain,2,0.14
+34,11,Headache,2,0.12
+35,11,Fatigue,2,0.09
+36,12,Muscle pain,2,0.13
+37,12,Headache,2,0.11
+38,12,Fatigue,2,0.08
+39,12,Liver enzyme elevation,3,0.04
+40,13,Muscle pain,2,0.12
+41,13,Headache,2,0.1
+42,13,Fatigue,2,0.07
+43,13,Liver enzyme elevation,3,0.05
+44,14,Nausea,2,0.15
+45,14,Dizziness,2,0.12
+46,14,Drowsiness,2,0.1

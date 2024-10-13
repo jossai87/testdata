@@ -1,0 +1,16 @@
+case_id,filing_date,plaintiff_type,allegation_type,related_medical_condition,status,potential_liability
+1,2020-04-12,Individual,Failure to warn,Cardiovascular complications,Settled,500000.0
+2,2021-06-15,Class action,Inadequate testing,Heart arrhythmia,Ongoing,5000000.0
+3,2022-02-28,Individual,False advertising,Hypertension,Pending,750000.0
+4,2020-09-30,Individual,Adverse reaction,Severe headaches,Settled,750000.0
+5,2021-11-15,Class action,Failure to warn,Seizures,Ongoing,8000000.0
+6,2023-05-20,Individual,Product liability,Cognitive impairment,Pending,1000000.0
+7,2022-03-10,Individual,Adverse reaction,Joint inflammation,Settled,600000.0
+8,2023-01-05,Class action,False advertising,Chronic pain,Ongoing,3000000.0
+9,2023-07-18,Individual,Failure to warn,Gastrointestinal bleeding,Pending,800000.0
+10,2022-07-07,Individual,Product liability,Severe hypoglycemia,Settled,800000.0
+11,2023-04-22,Class action,Inadequate testing,Pancreatic cancer,Ongoing,10000000.0
+12,2023-09-14,Individual,Failure to warn,Ketoacidosis,Pending,900000.0
+13,2022-12-01,Individual,Adverse reaction,Muscle pain,Settled,550000.0
+14,2023-05-15,Class action,Failure to warn,Liver damage,Ongoing,15000000.0
+15,2023-10-30,Individual,False advertising,Cardiovascular events,Pending,1200000.0

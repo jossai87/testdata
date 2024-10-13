@@ -1,0 +1,7 @@
+drug_id,drug_name,therapeutic_area,development_phase,target_condition,mechanism_of_action,year_discovered,lead_scientist
+1,CardioGuard,Cardiovascular,Phase 3,Hypertension,ACE inhibitor with novel binding mechanism,2015,Dr. Emily Chen
+2,NeuroClear,Neurology,Phase 2,Alzheimer's Disease,Beta-amyloid plaque inhibitor,2016,Dr. Michael Patel
+3,ArthriEase,Rheumatology,Phase 3,Rheumatoid Arthritis,Selective inflammatory pathway modulator,2017,Dr. Sarah Johnson
+4,DiabetAid,Endocrinology,Phase 2,Type 2 Diabetes,Dual action GLP-1 and GIP receptor agonist,2018,Dr. David Lee
+5,CholesterEx,Cardiovascular,Phase 3,Hypercholesterolemia,Novel PCSK9 inhibitor,2019,Dr. Rachel Martinez
+6,PainAway,Neurology,Phase 1,Chronic Pain,Selective sodium channel blocker,2020,Dr. Alex Turner
