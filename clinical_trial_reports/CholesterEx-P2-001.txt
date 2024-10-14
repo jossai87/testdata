@@ -1,0 +1,58 @@
+Clinical Trial Report: CholesterEx-P2-001
+
+1. Executive Summary:
+The Phase 2 trial of CholesterEx, a novel PCSK9 inhibitor, has been successfully completed for the treatment of hypercholesterolemia. The study demonstrated significant efficacy in reducing LDL-C levels in patients with high cardiovascular risk, including those with heterozygous familial hypercholesterolemia (HeFH). The safety profile was favorable, supporting the advancement of CholesterEx to Phase 3 clinical trials.
+
+2. Trial Design:
+- Study type: Randomized, double-blind, placebo-controlled, dose-ranging
+- Duration: November 5, 2020 - November 4, 2021
+- Participants: 400 adults with LDL-C ≥100 mg/dL (≥70 mg/dL for those with ASCVD) on maximum tolerated statin therapy
+- Dosage: 75mg, 150mg, 300mg CholesterEx or placebo, subcutaneous injection every 4 weeks
+- Primary endpoint: Percent change in LDL-C from baseline to week 24
+- Secondary endpoints: Changes in other lipid parameters, PCSK9 levels, achievement of LDL-C goals, safety and tolerability
+
+3. Efficacy Results:
+- Mean percent change in LDL-C at week 24:
+  * 75mg: -48.3%
+  * 150mg: -62.7%
+  * 300mg: -65.9%
+  * Placebo: -2.1%
+  (p<0.001 for all doses vs placebo)
+- Proportion achieving LDL-C <70 mg/dL at week 24:
+  * 300mg: 82%
+  * Placebo: 3%
+  (p<0.001)
+- Significant reductions also observed in total cholesterol, non-HDL-C, and apolipoprotein B (all p<0.001 vs placebo)
+- PCSK9 levels reduced by >90% in all active treatment groups
+
+4. Safety and Tolerability:
+- Most common adverse events:
+  * Injection site reactions (6.8%)
+  * Nasopharyngitis (5.2%)
+  * Headache (4.5%)
+  * Myalgia (3.7%)
+- Serious adverse events: 2.5% (300mg) vs 2.7% (placebo), not statistically significant
+- Discontinuation rate due to adverse events: 2.2% (300mg) vs 2.0% (placebo)
+- No significant changes in liver function tests or creatine kinase levels
+
+5. Pharmacokinetics and Pharmacodynamics:
+- Dose-proportional increase in plasma concentrations
+- Terminal half-life: approximately 19 days, supporting monthly dosing
+- Maximal PCSK9 suppression achieved within 2 weeks and maintained throughout the dosing interval
+
+6. Subgroup Analysis:
+- Consistent efficacy observed across subgroups, including HeFH patients
+- Slightly greater LDL-C reductions in patients with higher baseline PCSK9 levels
+
+7. Conclusions:
+CholesterEx demonstrated robust efficacy in reducing LDL-C and other atherogenic lipid parameters, with a favorable safety profile. The 300mg dose showed the most promising efficacy-safety balance. These results strongly support the advancement of CholesterEx to Phase 3 clinical trials.
+
+8. Recommendations:
+- Proceed with Phase 3 trials using the 300mg dose
+- Include a diverse patient population, with a focus on high-risk groups (e.g., ASCVD, HeFH)
+- Conduct longer-term studies to assess sustained efficacy and safety
+- Explore potential for less frequent dosing (e.g., every 8 weeks)
+- Plan for cardiovascular outcomes trial to evaluate impact on MACE
+
+Principal Investigator: Dr. Robert Chen
+Date of Report: December 20, 2021

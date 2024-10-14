@@ -1,0 +1,53 @@
+Clinical Trial Report: DiabetAid-P2-001
+
+1. Executive Summary:
+The Phase 2 trial of DiabetAid, a dual action GLP-1 and GIP receptor agonist, has been completed for the treatment of Type 2 Diabetes (T2D). The study aimed to evaluate the efficacy and safety of DiabetAid in patients inadequately controlled on metformin. While the trial demonstrated some glycemic improvements, it did not meet its primary endpoint of superior HbA1c reduction compared to the active comparator. The safety profile was generally acceptable but with notable gastrointestinal side effects.
+
+2. Trial Design:
+- Study type: Randomized, double-blind, active-controlled, dose-ranging
+- Duration: January 20, 2021 - January 19, 2022
+- Participants: 300 adults with T2D (HbA1c 7.0-10.0%) on stable metformin therapy
+- Dosage: 5mg, 10mg, 15mg DiabetAid or 1.8mg liraglutide, once daily subcutaneous injection
+- Primary endpoint: Change in HbA1c at 26 weeks
+- Secondary endpoints: Fasting plasma glucose, body weight, proportion achieving HbA1c <7%, safety and tolerability
+
+3. Efficacy Results:
+- Mean HbA1c reduction at 26 weeks:
+  * 5mg DiabetAid: -0.6%
+  * 10mg DiabetAid: -0.8%
+  * 15mg DiabetAid: -0.9%
+  * Liraglutide 1.8mg: -1.1%
+  (p=0.15 for 15mg DiabetAid vs liraglutide, not meeting superiority)
+- Fasting plasma glucose reduction (15mg DiabetAid): -28 mg/dL vs -32 mg/dL (liraglutide), p=0.22
+- Mean weight loss: -3.2 kg (15mg DiabetAid) vs -3.7 kg (liraglutide), p=0.18
+- Proportion achieving HbA1c <7%: 48% (15mg DiabetAid) vs 56% (liraglutide), p=0.11
+
+4. Safety and Tolerability:
+- Most common adverse events (15mg DiabetAid):
+  * Nausea (28.0%)
+  * Vomiting (15.3%)
+  * Diarrhea (12.7%)
+  * Headache (10.0%)
+- Serious adverse events: 3.3% (15mg DiabetAid) vs 2.7% (liraglutide)
+- Discontinuation rate due to adverse events: 9.3% (15mg DiabetAid) vs 7.3% (liraglutide)
+- No significant cardiovascular safety signals observed
+
+5. Pharmacokinetics and Pharmacodynamics:
+- Dose-dependent increase in plasma concentrations
+- Time to maximum concentration: 8-12 hours
+- Half-life: approximately 5 days, supporting once-daily dosing
+
+6. Patient-Reported Outcomes:
+- Similar improvements in diabetes treatment satisfaction scores between DiabetAid and liraglutide
+
+7. Conclusions:
+DiabetAid showed glycemic efficacy and weight loss in T2D patients, but did not demonstrate superiority to liraglutide. The safety profile was generally consistent with the GLP-1 receptor agonist class, with a higher incidence of gastrointestinal side effects. These results do not support advancing DiabetAid to Phase 3 trials in its current formulation.
+
+8. Recommendations:
+- Conduct additional preclinical studies to optimize the molecule for improved efficacy and tolerability
+- Consider exploring alternative dosing regimens or delivery methods
+- Investigate potential in combination with other diabetes medications
+- Evaluate the compound for other potential indications where its dual-action mechanism might provide unique benefits
+
+Principal Investigator: Dr. Anita Sharma
+Date of Report: March 15, 2022

@@ -1,0 +1,55 @@
+Clinical Trial Report: ArthriEase-P2-001
+
+1. Executive Summary:
+The Phase 2 trial of ArthriEase, a selective inflammatory pathway modulator, has been successfully completed for the treatment of Rheumatoid Arthritis (RA). The study demonstrated significant efficacy in reducing joint inflammation and improving functional outcomes in patients with moderate to severe RA, with a favorable safety profile. These positive results support the advancement of ArthriEase to Phase 3 clinical trials.
+
+2. Trial Design:
+- Study type: Randomized, double-blind, placebo-controlled, dose-ranging
+- Duration: September 10, 2020 - September 9, 2021
+- Participants: 350 adults with moderate to severe RA (DAS28-CRP ≥ 3.2)
+- Dosage: 50mg, 100mg, 150mg ArthriEase or placebo, once daily
+- Primary endpoint: ACR20 response at week 24
+- Secondary endpoints: ACR50, ACR70, DAS28-CRP change, HAQ-DI, safety and tolerability
+
+3. Efficacy Results:
+- ACR20 response rates at week 24:
+  * 50mg: 52%
+  * 100mg: 61%
+  * 150mg: 68%
+  * Placebo: 31%
+  (p<0.001 for all doses vs placebo)
+- ACR50 response rate at week 24: 45% (150mg) vs 18% (placebo), p<0.001
+- ACR70 response rate at week 24: 22% (150mg) vs 7% (placebo), p<0.001
+- Mean DAS28-CRP change: -2.1 (150mg) vs -0.8 (placebo), p<0.001
+- HAQ-DI improvement: -0.58 (150mg) vs -0.26 (placebo), p<0.01
+
+4. Safety and Tolerability:
+- Most common adverse events:
+  * Upper respiratory tract infection (12.5%)
+  * Headache (9.8%)
+  * Nausea (8.2%)
+  * Diarrhea (6.5%)
+- Serious adverse events: 3.5% (150mg) vs 3.2% (placebo), not statistically significant
+- Discontinuation rate due to adverse events: 4.8% (150mg) vs 4.0% (placebo)
+- No significant changes in lipid profiles or liver enzymes observed
+
+5. Pharmacokinetics and Pharmacodynamics:
+- Dose-proportional increase in plasma concentrations
+- Steady-state achieved within 10 days of once-daily dosing
+- Significant reduction in serum inflammatory markers (CRP, IL-6) observed in all active treatment groups
+
+6. Quality of Life Outcomes:
+- Significant improvement in SF-36 physical component summary and FACIT-Fatigue scores in all ArthriEase groups vs placebo (p<0.01)
+
+7. Conclusions:
+ArthriEase demonstrated robust efficacy in improving signs and symptoms of RA, with a dose-dependent response. The 150mg dose showed the most favorable efficacy-safety balance. The safety profile was consistent with the class of selective inflammatory modulators. These results strongly support the advancement of ArthriEase to Phase 3 clinical trials.
+
+8. Recommendations:
+- Proceed with Phase 3 trials using the 150mg dose
+- Conduct longer-term studies to assess sustained efficacy and safety
+- Explore potential benefits in other inflammatory arthritides (e.g., psoriatic arthritis)
+- Investigate biomarkers for predicting treatment response
+- Consider head-to-head trials against current standard-of-care biologics
+
+Principal Investigator: Dr. Laura Chen
+Date of Report: November 15, 2021

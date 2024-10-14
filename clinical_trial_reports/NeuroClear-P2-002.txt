@@ -1,0 +1,54 @@
+Clinical Trial Report: NeuroClear-P2-002
+
+1. Executive Summary:
+The second Phase 2 trial of NeuroClear, a beta-amyloid plaque inhibitor, has been completed for the treatment of Alzheimer's Disease (AD). This study aimed to build upon the results of the first Phase 2 trial, focusing on optimizing dosage and further evaluating efficacy and safety in patients with mild to moderate AD. The trial showed moderate efficacy in slowing cognitive decline, with an acceptable safety profile, supporting advancement to Phase 3 trials.
+
+2. Trial Design:
+- Study type: Randomized, double-blind, placebo-controlled, dose-ranging
+- Duration: August 15, 2021 - August 14, 2022
+- Participants: 400 adults with mild to moderate AD (MMSE score 16-26)
+- Dosage: 25mg, 50mg, 75mg NeuroClear or placebo, once daily
+- Primary endpoint: Change in ADAS-Cog score at 52 weeks
+- Secondary endpoints: Change in CDR-SB, ADCS-ADL, NPI, hippocampal volume on MRI, CSF biomarkers
+
+3. Efficacy Results:
+- Mean ADAS-Cog score change:
+  * 25mg: -1.2 points
+  * 50mg: -1.7 points
+  * 75mg: -2.1 points
+  * Placebo: +1.5 points
+  (p=0.02 for 50mg and 75mg vs placebo)
+- CDR-SB score change: -0.5 points (75mg) vs +0.8 points (placebo), p=0.03
+- ADCS-ADL score: Significant improvement in 75mg group vs placebo (p=0.04)
+- Hippocampal volume loss: 1.1% (75mg) vs 2.6% (placebo), p=0.01
+- CSF Aβ42 levels increased by 28% in the 75mg group (p<0.01)
+
+4. Safety and Tolerability:
+- Most common adverse events:
+  * Headache (15.5%)
+  * Nausea (13.0%)
+  * Dizziness (10.5%)
+  * Insomnia (9.5%)
+- Serious adverse events: 4.8% (75mg) vs 4.5% (placebo), not statistically significant
+- Discontinuation rate due to adverse events: 7.5% (75mg) vs 6.0% (placebo)
+- ARIA-E observed in 5.5% of 75mg NeuroClear patients vs 0.5% in placebo group
+
+5. Pharmacokinetics and Pharmacodynamics:
+- Dose-dependent increase in CSF drug levels
+- PET imaging substudy (n=80) showed 26% reduction in amyloid plaque load at 52 weeks in 75mg group
+
+6. Quality of Life Outcomes:
+- Significant improvement in QoL-AD scores in 75mg group vs placebo (p=0.03)
+
+7. Conclusions:
+NeuroClear demonstrated dose-dependent efficacy in slowing cognitive decline and reducing biomarkers of AD pathology in patients with mild to moderate AD. The 75mg dose showed the most promising efficacy-safety balance. These results support the advancement of NeuroClear to Phase 3 trials.
+
+8. Recommendations:
+- Proceed with Phase 3 trials using the 75mg dose
+- Implement comprehensive ARIA-E monitoring and management protocol
+- Conduct longer-term studies to assess sustained efficacy and safety
+- Explore potential synergistic effects with other AD treatments
+- Investigate biomarkers for early identification of treatment responders
+
+Principal Investigator: Dr. Marcus Wei
+Date of Report: October 1, 2022
