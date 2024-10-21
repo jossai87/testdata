@@ -1,0 +1,218 @@
+Parameters:
+  RedshiftDatabaseName:
+    Type: String
+    Default: dev
+  RedshiftUserName:
+    Type: String
+    Default: admin
+  RedshiftPassword:
+    Type: String
+    NoEcho: true
+    Default: 'MyPassword123'  
+    Description: 'The password for the Redshift master user. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.'
+    MinLength: 8
+    MaxLength: 64
+    AllowedPattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};:'",.<>?]{8,64}$
+    ConstraintDescription: 'Password must be between 8 and 64 characters, and contain at least one uppercase letter, one lowercase letter, and one number.'
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      PandasLayer: 'arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python39:20'
+    us-east-2:
+      PandasLayer: 'arn:aws:lambda:us-east-2:336392948345:layer:AWSSDKPandas-Python39:20'
+    us-west-1:
+      PandasLayer: 'arn:aws:lambda:us-west-1:336392948345:layer:AWSSDKPandas-Python39:20'
+    us-west-2:
+      PandasLayer: 'arn:aws:lambda:us-west-2:336392948345:layer:AWSSDKPandas-Python39:20'
+
+Resources:
+  # Redshift Cluster
+  RedshiftCluster:
+    Type: AWS::Redshift::Cluster
+    Properties:
+      DBName: !Ref RedshiftDatabaseName
+      ClusterIdentifier: stockprice-redshift-cluster
+      NodeType: dc2.large
+      MasterUsername: !Ref RedshiftUserName
+      MasterUserPassword: !Ref RedshiftPassword
+      ClusterType: single-node
+      PubliclyAccessible: true
+      VpcSecurityGroupIds: [!Ref SecurityGroup]
+      ClusterSubnetGroupName: !Ref RedshiftSubnetGroup
+
+  # Redshift Subnet Group
+  RedshiftSubnetGroup:
+    Type: AWS::Redshift::ClusterSubnetGroup
+    Properties:
+      Description: Redshift Subnet Group
+      SubnetIds:
+        - !Ref Subnet1
+        - !Ref Subnet2
+
+  # Security Group
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for database access
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: '-1'
+          FromPort: -1
+          ToPort: -1
+          CidrIp: '0.0.0.0/0'
+
+  # VPC
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+
+  # Internet Gateway
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  # VPC Gateway Attachment
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  # Subnet 1
+  Subnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      CidrBlock: 10.0.1.0/24
+      VpcId: !Ref VPC
+
+  # Subnet 2
+  Subnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      CidrBlock: 10.0.2.0/24
+      VpcId: !Ref VPC
+
+  # Lambda Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: RedshiftPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - redshift-data:ExecuteStatement
+                  - redshift-data:BatchExecuteStatement
+                Resource: '*'
+
+  # Lambda to create and populate Redshift table
+  CreateStockPriceTableLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      Timeout: 300
+      Environment:
+        Variables:
+          REDSHIFT_CLUSTER_ID: !Ref RedshiftCluster
+          REDSHIFT_DATABASE: !Ref RedshiftDatabaseName
+          REDSHIFT_USER: !Ref RedshiftUserName
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+
+          redshift_data = boto3.client('redshift-data')
+
+          def lambda_handler(event, context):
+              cluster_id = os.environ['REDSHIFT_CLUSTER_ID']
+              database = os.environ['REDSHIFT_DATABASE']
+              user = os.environ['REDSHIFT_USER']
+              
+              create_table_sql = '''
+              CREATE TABLE IF NOT EXISTS Stock_Prices (
+                date DATE PRIMARY KEY,
+                opening_price DECIMAL(10, 2),
+                high_price DECIMAL(10, 2),
+                low_price DECIMAL(10, 2),
+                closing_price DECIMAL(10, 2),
+                volume INT
+              );
+              '''
+              
+              insert_data_sql = '''
+              INSERT INTO Stock_Prices (date, opening_price, high_price, low_price, closing_price, volume) VALUES
+              ('2020-01-01', 30.99, 32.29, 29.73, 33.22, 521854),
+              ('2020-02-01', 31.91, 33.01, 29.44, 31.90, 455711),
+              ('2020-03-01', 34.60, 34.88, 32.71, 34.24, 498106),
+              ('2020-04-01', 35.60, 36.30, 33.66, 37.49, 607249),
+              ('2020-05-01', 34.82, 35.25, 33.50, 34.38, 734688),
+              ('2020-06-01', 37.92, 38.82, 36.23, 39.09, 554057),
+              ('2020-07-01', 37.60, 38.47, 36.63, 36.34, 711245),
+              ('2020-08-01', 37.34, 38.80, 35.61, 38.73, 683580),
+              ('2020-09-01', 41.47, 41.84, 38.87, 40.22, 546891),
+              ('2020-10-01', 41.74, 43.07, 39.21, 43.61, 675111),
+              ('2020-11-01', 44.82, 45.88, 42.71, 45.20, 609983),
+              ('2020-12-01', 44.51, 45.54, 42.77, 44.26, 413252);
+              '''
+              
+              # Create the table
+              response = redshift_data.execute_statement(
+                  ClusterIdentifier=cluster_id,
+                  Database=database,
+                  DbUser=user,
+                  Sql=create_table_sql
+              )
+              print("Table created", response)
+              
+              # Insert the data
+              response = redshift_data.execute_statement(
+                  ClusterIdentifier=cluster_id,
+                  Database=database,
+                  DbUser=user,
+                  Sql=insert_data_sql
+              )
+              print("Data inserted", response)
+
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('Stock Prices Table Created and Data Inserted!')
+              }
+
+  # Custom resource to trigger Lambda after Redshift Cluster creation
+  LoadDataToRedshift:
+    DependsOn: RedshiftCluster
+    Type: Custom::LoadDataToRedshift
+    Properties:
+      ServiceToken: !GetAtt CreateStockPriceTableLambda.Arn
+      cluster_id: !Ref RedshiftCluster
+      database: !Ref RedshiftDatabaseName
+      user: !Ref RedshiftUserName
+
+Outputs:
+  RedshiftClusterEndpoint:
+    Description: Redshift Cluster Endpoint
+    Value: !GetAtt RedshiftCluster.Endpoint.Address

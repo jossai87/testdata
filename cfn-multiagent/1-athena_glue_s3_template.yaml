@@ -1,0 +1,615 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation template to create Athena resources with AWS Glue, S3 buckets, and data copy from specified URLs
+
+Parameters:
+  AthenaDatabaseName:
+    Type: String
+    Default: 'athena_db'
+  Alias:
+    Type: String
+    Default: '{ENTER ALIAS}'
+    Description: Name of the S3 bucket to create and store data   
+
+Resources:
+  LoggingBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub 'logging-bucket-${AWS::AccountId}-${Alias}'
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub data-store-${Alias}
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: 'logs/'
+
+  AthenaOutputBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub athena-output-${Alias}
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: 'logs/'
+
+  UnstructuredDataBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub unstructured-data-${Alias}
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: 'logs/'
+
+  GlueDatabase:
+    Type: 'AWS::Glue::Database'
+    Properties:
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseInput:
+        Name: !Ref AthenaDatabaseName
+
+  # Updated Glue Crawlers for the new datasets
+  GlueCrawlerDrugTrials:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-drug_trials"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://data-store-${Alias}/drugtrials/"
+      TablePrefix: 'drug_trials_'
+
+  GlueCrawlerDrugs:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-drugs"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://data-store-${Alias}/drugs/"
+      TablePrefix: 'drugs_'
+
+  GlueCrawlerLawsuits:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-lawsuits"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://data-store-${Alias}/lawsuits/"
+      TablePrefix: 'lawsuits_'
+
+  GlueCrawlerPatents:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-patents"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://data-store-${Alias}/patents/"
+      TablePrefix: 'patents_'
+
+  GlueCrawlerResearchBudgets:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-research_budgets"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://data-store-${Alias}/researchbudget/"
+      TablePrefix: 'research_budgets_'
+
+  GlueCrawlerSideEffects:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-side_effects"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://data-store-${Alias}/sideeffects/"
+      TablePrefix: 'side_effects_'
+
+
+  # Glue tables for the datasets
+  GlueTableDrugTrials:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerDrugTrials
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'drug_trials'
+        Description: 'Drug Trials table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'trial_id'
+              Type: 'int'
+            - Name: 'drug_name'
+              Type: 'string'
+            - Name: 'start_date'
+              Type: 'string'
+            - Name: 'end_date'
+              Type: 'string'
+            - Name: 'phase'
+              Type: 'int'
+            - Name: 'num_participants'
+              Type: 'int'
+            - Name: 'success_rate'
+              Type: 'float'
+            - Name: 'outcome'
+              Type: 'string'
+          Location: !Sub "s3://data-store-${Alias}/drugtrials/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+
+  GlueTableDrugs:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerDrugs
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'drugs'
+        Description: 'Drugs table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'drug_id'
+              Type: 'int'
+            - Name: 'drug_name'
+              Type: 'string'
+            - Name: 'therapeutic_area'
+              Type: 'string'
+            - Name: 'development_phase'
+              Type: 'string'
+            - Name: 'target_condition'
+              Type: 'string'
+            - Name: 'mechanism_of_action'
+              Type: 'string'
+            - Name: 'year_discovered'
+              Type: 'int'
+            - Name: 'lead_scientist'
+              Type: 'string'
+          Location: !Sub "s3://data-store-${Alias}/drugs/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+
+  GlueTableLawsuits:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerLawsuits
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'lawsuits'
+        Description: 'Lawsuits table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'case_id'
+              Type: 'int'
+            - Name: 'filing_date'
+              Type: 'string'
+            - Name: 'plaintiff_type'
+              Type: 'string'
+            - Name: 'allegation_type'
+              Type: 'string'
+            - Name: 'related_medical_condition'
+              Type: 'string'
+            - Name: 'status'
+              Type: 'string'
+            - Name: 'potential_liability'
+              Type: 'decimal(15,2)'
+          Location: !Sub "s3://data-store-${Alias}/lawsuits/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+
+  GlueTablePatents:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerPatents
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'patents'
+        Description: 'Patents table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'patent_id'
+              Type: 'string'
+            - Name: 'method_description'
+              Type: 'string'
+            - Name: 'filing_date'
+              Type: 'string'
+            - Name: 'approval_date'
+              Type: 'string'
+            - Name: 'expiration_date'
+              Type: 'string'
+            - Name: 'estimated_value'
+              Type: 'decimal(15,2)'
+          Location: !Sub "s3://data-store-${Alias}/patents/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+
+  GlueTableResearchBudgets:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerResearchBudgets
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'research_budgets'
+        Description: 'Research Budgets table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'budget_id'
+              Type: 'int'
+            - Name: 'year'
+              Type: 'int'
+            - Name: 'department'
+              Type: 'string'
+            - Name: 'allocated_amount'
+              Type: 'decimal(15,2)'
+            - Name: 'spent_amount'
+              Type: 'decimal(15,2)'
+          Location: !Sub "s3://data-store-${Alias}/researchbudget/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+
+  GlueTableSideEffects:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerSideEffects
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'side_effects'
+        Description: 'Side Effects table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'effect_id'
+              Type: 'int'
+            - Name: 'trial_id'
+              Type: 'int'
+            - Name: 'effect_name'
+              Type: 'string'
+            - Name: 'severity'
+              Type: 'int'
+            - Name: 'frequency'
+              Type: 'float'
+          Location: !Sub "s3://data-store-${Alias}/sideeffects/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+
+
+  # SSM Parameter for Athena Output Bucket
+  AthenaOutputBucketSSMParameter:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: '/athena/outputBucket'
+      Type: 'String'
+      Value: !Sub 's3:///athena-output-${Alias}/'
+      Description: 'S3 output bucket for Athena query results'
+
+  UnstructuredDataBucketSSMParameter:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: '/unstructuredData'
+      Type: 'String'
+      Value: !Sub "unstructured-data-${Alias}"
+      Description: 'S3 bucket for unstructured data'
+
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'LambdaS3AccessPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:PutObject'
+                  - 's3:GetObject'
+                  - 's3:ListBucket'
+                Resource: 
+                  - !Sub "arn:aws:s3:::data-store-${Alias}/*"
+                  - !Sub "arn:aws:s3:::data-store-${Alias}"
+                  - !Sub "arn:aws:s3:::athena-output-${Alias}/*"
+                  - !Sub "arn:aws:s3:::athena-output-${Alias}"
+                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}/*"
+                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}"
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*:*"
+              - Effect: Allow
+                Action:
+                  - 'ssm:GetParameter'
+                Resource:
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/athena/outputBucket"
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/unstructuredData"
+
+  CopyDataLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 120
+      Code:
+        ZipFile: |
+          import boto3
+          import urllib3
+          import os
+          import logging
+          import cfnresponse
+          import time
+
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          def handler(event, context):
+              try:
+                  s3 = boto3.client('s3')
+                  bucket = os.environ.get('S3BucketName')
+                  
+                  urls = {
+                      "drugtrials/drug_trials.csv": "https://github.com/jossai87/testdata/raw/main/drug_trials.csv",
+                      "drugs/drugs.csv": "https://github.com/jossai87/testdata/raw/main/drugs.csv",
+                      "lawsuits/lawsuits.csv": "https://github.com/jossai87/testdata/raw/main/lawsuits.csv",
+                      "patents/patents.csv": "https://github.com/jossai87/testdata/raw/main/patents.csv",
+                      "researchbudget/research_budgets.csv": "https://github.com/jossai87/testdata/raw/main/research_budgets.csv",
+                      "sideeffects/side_effects.csv": "https://github.com/jossai87/testdata/raw/main/side_effects.csv"
+                  }
+
+                  http = urllib3.PoolManager()
+                  
+                  for key, url in urls.items():
+                      response = http.request('GET', url)
+                      if response.status == 200:
+                          s3.put_object(Bucket=bucket, Key=key, Body=response.data)
+                          logger.info(f"Successfully uploaded {key} to {bucket}")
+                      else:
+                          logger.error(f"Failed to download {url}, status code: {response.status}")
+                          cfnresponse.send(event, context, cfnresponse.FAILED, {'Status': 'Failed'})
+                          return
+                  time.sleep(2)
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {'Status': 'Success'})
+              except Exception as e:
+                  logger.error(f"Error: {str(e)}")
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {'Status': 'Failed', 'Error': str(e)})
+                  return {"status": "failed", "error": str(e)}
+      Environment:
+        Variables:
+          S3BucketName: !Sub 'data-store-${Alias}'
+
+  CopyDataCustomResource:
+    Type: 'Custom::CopyData'
+    Properties:
+      ServiceToken: !GetAtt CopyDataLambda.Arn
+      S3BucketName: !Sub data-store-${Alias}
+
+  CopyUnstructuredDataLambda:
+    Type: 'AWS::Lambda::Function'
+    DependsOn: 
+      - UnstructuredDataBucket  
+      - AthenaOutputBucketSSMParameter
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 120
+      Code:
+        ZipFile: |
+          import boto3
+          import urllib3
+          import os
+          import logging
+          import cfnresponse
+          import time
+
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          def handler(event, context):
+              try:
+                  s3 = boto3.client('s3')
+                  bucket = os.environ.get('UnstructuredDataBucketName')
+                  
+                  urls = {
+                      # Annual reports
+                      "annual_reports/2020_10-K.docx": "https://github.com/jossai87/testdata/raw/main/annual_reports/2020_10-K.docx",
+                      "annual_reports/2021_10-K.docx": "https://github.com/jossai87/testdata/raw/main/annual_reports/2021_10-K.docx",
+                      "annual_reports/2022_10-K.docx": "https://github.com/jossai87/testdata/raw/main/annual_reports/2022_10-K.docx",
+                      "annual_reports/2023_10-K.docx": "https://github.com/jossai87/testdata/raw/main/annual_reports/2023_10-K.docx",
+                      
+                      # Clinical trial reports
+                      "clinical_trial_reports/ArthriEase-P2-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/ArthriEase-P2-001.txt",
+                      "clinical_trial_reports/ArthriEase-P3-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/ArthriEase-P3-001.txt",
+                      "clinical_trial_reports/ArthriEase-P3-002.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/ArthriEase-P3-002.txt",
+                      "clinical_trial_reports/CardioGuard-P2-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/CardioGuard-P2-001.txt",
+                      "clinical_trial_reports/CardioGuard-P3-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/CardioGuard-P3-001.txt",
+                      "clinical_trial_reports/CardioGuard-P3-002.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/CardioGuard-P3-002.txt",
+                      "clinical_trial_reports/CholesterEx-P2-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/CholesterEx-P2-001.txt",
+                      "clinical_trial_reports/CholesterEx-P3-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/CholesterEx-P3-001.txt",
+                      "clinical_trial_reports/CholesterEx-P3-002.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/CholesterEx-P3-002.txt",
+                      "clinical_trial_reports/DiabetAid-P2-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/DiabetAid-P2-001.txt",
+                      "clinical_trial_reports/DiabetAid-P2-002.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/DiabetAid-P2-002.txt",
+                      "clinical_trial_reports/NeuroClear-P2-001.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/NeuroClear-P2-001.txt",
+                      "clinical_trial_reports/NeuroClear-P2-002.txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/NeuroClear-P2-002.txt",
+                      "clinical_trial_reports/PainAway-P1-001(1).txt": "https://github.com/jossai87/testdata/raw/main/clinical_trial_reports/PainAway-P1-001(1).txt",
+                      
+                      # Legal briefs
+                      "legal_briefs/legal-brief-1.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-1.txt",
+                      "legal_briefs/legal-brief-2.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-2.txt",
+                      "legal_briefs/legal-brief-3.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-3.txt",
+                      "legal_briefs/legal-brief-4.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-4.txt",
+                      "legal_briefs/legal-brief-5.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-5.txt",
+                      "legal_briefs/legal-brief-6.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-6.txt",
+                      "legal_briefs/legal-brief-7.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-7.txt",
+                      "legal_briefs/legal-brief-8.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-8.txt",
+                      "legal_briefs/legal-brief-9.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-9.txt",
+                      "legal_briefs/legal-brief-10.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-10.txt",
+                      "legal_briefs/legal-brief-11.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-11.txt",
+                      "legal_briefs/legal-brief-12.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-12.txt",
+                      "legal_briefs/legal-brief-13.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-13.txt",
+                      "legal_briefs/legal-brief-14.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-14.txt",
+                      "legal_briefs/legal-brief-15.txt": "https://github.com/jossai87/testdata/raw/main/legal_briefs/legal-brief-15.txt"
+                  }
+
+
+                  http = urllib3.PoolManager()
+                  
+                  for key, url in urls.items():
+                      response = http.request('GET', url)
+                      if response.status == 200:
+                          s3.put_object(Bucket=bucket, Key=key, Body=response.data)
+                          logger.info(f"Successfully uploaded {key} to {bucket}")
+                      else:
+                          logger.error(f"Failed to download {url}, status code: {response.status}")
+                          cfnresponse.send(event, context, cfnresponse.FAILED, {'Status': 'Failed'})
+                          return
+                  time.sleep(2)
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {'Status': 'Success'})
+              except Exception as e:
+                  logger.error(f"Error: {str(e)}")
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {'Status': 'Failed', 'Error': str(e)})
+                  return {"status": "failed", "error": str(e)}
+      Environment:
+        Variables:
+          UnstructuredDataBucketName: !Sub 'unstructured-data-${Alias}'
+
+  CopyUnstructuredDataCustomResource:
+    Type: 'Custom::CopyUnstructuredData'
+    Properties:
+      ServiceToken: !GetAtt CopyUnstructuredDataLambda.Arn
+      UnstructuredDataBucketName: !Sub unstructured-data-${Alias}
+
+
+  GlueServiceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'GlueServicePolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                  - 's3:PutObject'
+                  - 's3:ListBucket'
+                Resource: 
+                  - !Sub "arn:aws:s3:::data-store-${Alias}/*"
+                  - !Sub "arn:aws:s3:::data-store-${Alias}"
+                  - !Sub "arn:aws:s3:::athena-output-${Alias}/*"
+                  - !Sub "arn:aws:s3:::athena-output-${Alias}"
+                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}/*"
+                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}"
+              - Effect: Allow
+                Action:
+                  - 'glue:CreateCrawler'
+                  - 'glue:StartCrawler'
+                  - 'glue:GetCrawler'
+                  - 'glue:DeleteCrawler'
+                Resource: !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:crawler/*"
+
+Outputs:
+  AthenaDatabaseName:
+    Description: 'Name of the Athena database created'
+    Value: !Ref AthenaDatabaseName
+
+  S3BucketName:
+    Description: 'Name of the S3 bucket created'
+    Value: !Sub data-store-${Alias}
+
+  AthenaOutputBucketName:
+    Description: 'Name of the S3 bucket for Athena query results'
+    Value: !Sub athena-output-${Alias}
+
+  UnstructuredDataBucketName:
+    Description: 'Name of the secondary S3 bucket for unstructured data'
+    Value: !Sub unstructured-data-${Alias}
