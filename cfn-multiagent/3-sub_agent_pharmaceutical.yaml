@@ -5,7 +5,7 @@ Description: CloudFormation template to create an AWS Bedrock Agent resource and
 Parameters:
   Alias:
     Type: String
-    Default: '{ENTER ALIAS}'
+    Default: solution-library
     Description: Your alias 
 
 Resources:

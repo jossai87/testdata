@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  AthenaGlueS3Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://raw.githubusercontent.com/jossai87/testdata/main/cfn-multiagent/1-athena_glue_s3_template.yaml
+
+  RedshiftStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://raw.githubusercontent.com/jossai87/testdata/main/cfn-multiagent/2-redshift_template.yaml
+
+  SubAgentPharmaceuticalStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://raw.githubusercontent.com/jossai87/testdata/main/cfn-multiagent/3-sub_agent_pharmaceutical.yaml
+
+  SubAgentLegalStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://raw.githubusercontent.com/jossai87/testdata/main/cfn-multiagent/4-sub_agent_legal.yaml
+
+  SubAgentFinanceStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://raw.githubusercontent.com/jossai87/testdata/main/cfn-multiagent/5-sub_agent_finance.yaml
+
+  MainAgentApiGwStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://raw.githubusercontent.com/jossai87/testdata/main/cfn-multiagent/6-main_agent_apigw.yaml
