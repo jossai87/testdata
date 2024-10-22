@@ -68,7 +68,16 @@ Resources:
                   - 'ssm:GetParameter'
                 Resource: 
                   - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/athena/outputBucket/*"
-
+        - PolicyName: RedshiftPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - redshift-data:ExecuteStatement
+                  - redshift-data:BatchExecuteStatement
+                  - redshift:GetClusterCredentials  
+                Resource: '*'
 
 
   # IAM Managed Policy for Lambda Invocation
@@ -132,6 +141,7 @@ Resources:
           from time import sleep
           import os
           import logging
+          import json
           from botocore.exceptions import ClientError
 
           # Initialize the Athena, Redshift, and Systems Manager clients
@@ -181,68 +191,53 @@ Resources:
                       logger.error(f"Error in athena_query_handler: {str(e)}")
                       raise
 
-              # Dummy Redshift data
-              dummy_data = {
-                  'stock_prices': [
-                    {'date': '2020-01-01', 'closing_price': 33.22},
-                    {'date': '2020-02-01', 'closing_price': 31.90},
-                    {'date': '2020-03-01', 'closing_price': 34.24},
-                    {'date': '2020-04-01', 'closing_price': 37.49},
-                    {'date': '2020-05-01', 'closing_price': 34.38},
-                    {'date': '2020-06-01', 'closing_price': 39.09},
-                    {'date': '2020-07-01', 'closing_price': 36.34},
-                    {'date': '2020-08-01', 'closing_price': 38.73},
-                    {'date': '2020-09-01', 'closing_price': 40.22},
-                    {'date': '2020-10-01', 'closing_price': 43.61},
-                    {'date': '2020-11-01', 'closing_price': 45.20},
-                    {'date': '2020-12-01', 'closing_price': 44.26},
-                    {'date': '2021-01-01', 'closing_price': 46.15},
-                    {'date': '2021-02-01', 'closing_price': 45.17},
-                    {'date': '2021-03-01', 'closing_price': 48.91},
-                    {'date': '2021-04-01', 'closing_price': 49.65},
-                    {'date': '2021-05-01', 'closing_price': 49.43},
-                    {'date': '2021-06-01', 'closing_price': 51.19},
-                    {'date': '2021-07-01', 'closing_price': 51.16},
-                    {'date': '2021-08-01', 'closing_price': 53.28},
-                    {'date': '2021-09-01', 'closing_price': 54.94},
-                    {'date': '2021-10-01', 'closing_price': 55.26},
-                    {'date': '2021-11-01', 'closing_price': 57.96},
-                    {'date': '2021-12-01', 'closing_price': 58.90},
-                    {'date': '2022-01-01', 'closing_price': 58.74},
-                    {'date': '2022-02-01', 'closing_price': 61.20},
-                    {'date': '2022-03-01', 'closing_price': 62.80},
-                    {'date': '2022-04-01', 'closing_price': 61.06},
-                    {'date': '2022-05-01', 'closing_price': 62.75},
-                    {'date': '2022-06-01', 'closing_price': 65.17},
-                    {'date': '2022-07-01', 'closing_price': 65.34},
-                    {'date': '2022-08-01', 'closing_price': 67.14},
-                    {'date': '2022-09-01', 'closing_price': 68.92},
-                    {'date': '2022-10-01', 'closing_price': 70.61},
-                    {'date': '2022-11-01', 'closing_price': 72.73},
-                    {'date': '2022-12-01', 'closing_price': 73.20},
-                    {'date': '2023-01-01', 'closing_price': 74.99},
-                    {'date': '2023-02-01', 'closing_price': 75.28},
-                    {'date': '2023-03-01', 'closing_price': 77.01},
-                    {'date': '2023-04-01', 'closing_price': 79.21},
-                    {'date': '2023-05-01', 'closing_price': 81.19},
-                    {'date': '2023-06-01', 'closing_price': 81.81},
-                    {'date': '2023-07-01', 'closing_price': 83.81},
-                    {'date': '2023-08-01', 'closing_price': 85.72},
-                    {'date': '2023-09-01', 'closing_price': 86.85},
-                    {'date': '2023-10-01', 'closing_price': 87.57},
-                    {'date': '2023-11-01', 'closing_price': 85.52},
-                    {'date': '2023-12-01', 'closing_price': 83.51},
-                    {'date': '2024-01-01', 'closing_price': 84.68},
-                    {'date': '2024-02-01', 'closing_price': 86.58},
-                    {'date': '2024-03-01', 'closing_price': 87.87}
-                  ]
-              }
 
               # Redshift Query Handler
               def redshift_query_handler(event):
                   try:
-                      logger.info(f"Returning dummy Redshift data: {dummy_data}")
-                      return dummy_data
+                      def get_ssm_parameter(parameter_name):
+                          """Retrieve parameter value from SSM"""
+                          response = ssm.get_parameter(Name=parameter_name)
+                          return response['Parameter']['Value']
+
+                      # Fetch Redshift details from SSM
+                      cluster_id = get_ssm_parameter('/redshift/cluster_id')
+                      database = get_ssm_parameter('/redshift/database')
+                      user = get_ssm_parameter('/redshift/user')
+              
+              # SQL query to fetch all records
+              redshift_query = event['requestBody']['content']['application/json']['properties'][0]['value']
+              
+              try:
+                  # Execute the query
+                  response = redshift_data.execute_statement(
+                      ClusterIdentifier=cluster_id,
+                      Database=database,
+                      DbUser=user,
+                      Sql=redshift_query
+                  )
+                  
+                  # Get the statement ID
+                  statement_id = response['Id']
+                  
+                  # Poll for query completion
+                  query_status = None
+                  while query_status not in ['FINISHED', 'FAILED', 'ABORTED']:
+                      status_response = redshift_data.describe_statement(Id=statement_id)
+                      query_status = status_response['Status']
+                      print(f"Query status: {query_status}")
+                      
+                      if query_status in ['FAILED', 'ABORTED']:
+                          raise Exception(f"Query failed or was aborted: {status_response['Error']}")
+                      
+                      # Wait before checking again
+                      time.sleep(2)
+                  
+                  # Once the query is finished, retrieve the results
+                  result = redshift_data.get_statement_result(Id=statement_id)
+                  
+                  # Return the raw records from the result set
+                  return json.dumps(result['Records'])
 
                   except ClientError as e:
                       logger.error(f"AWS ClientError in redshift_query_handler: {str(e)}")

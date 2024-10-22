@@ -8,23 +8,12 @@ Parameters:
   RedshiftPassword:
     Type: String
     NoEcho: true
-    Default: 'MyPassword123'  
+    Default: 'MyPassword123'
     Description: 'The password for the Redshift master user. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.'
     MinLength: 8
     MaxLength: 64
     AllowedPattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};:'",.<>?]{8,64}$
     ConstraintDescription: 'Password must be between 8 and 64 characters, and contain at least one uppercase letter, one lowercase letter, and one number.'
-
-Mappings:
-  RegionMap:
-    us-east-1:
-      PandasLayer: 'arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python39:20'
-    us-east-2:
-      PandasLayer: 'arn:aws:lambda:us-east-2:336392948345:layer:AWSSDKPandas-Python39:20'
-    us-west-1:
-      PandasLayer: 'arn:aws:lambda:us-west-1:336392948345:layer:AWSSDKPandas-Python39:20'
-    us-west-2:
-      PandasLayer: 'arn:aws:lambda:us-west-2:336392948345:layer:AWSSDKPandas-Python39:20'
 
 Resources:
   # Redshift Cluster
@@ -40,6 +29,31 @@ Resources:
       PubliclyAccessible: true
       VpcSecurityGroupIds: [!Ref SecurityGroup]
       ClusterSubnetGroupName: !Ref RedshiftSubnetGroup
+
+  # Redshift SSM Parameters
+  RedshiftClusterIdParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "/redshift/cluster_id"
+      Type: String
+      Value: !Ref RedshiftCluster
+      Description: "Redshift Cluster ID"
+
+  RedshiftDatabaseParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "/redshift/database"
+      Type: String
+      Value: !Ref RedshiftDatabaseName
+      Description: "Redshift Database Name"
+
+  RedshiftUserParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "/redshift/user"
+      Type: String
+      Value: !Ref RedshiftUserName
+      Description: "Redshift Database User"
 
   # Redshift Subnet Group
   RedshiftSubnetGroup:
@@ -125,6 +139,9 @@ Resources:
                 Action:
                   - redshift-data:ExecuteStatement
                   - redshift-data:BatchExecuteStatement
+                  - redshift:GetClusterCredentials
+                  - redshift:DescribeClusters
+                  - lambda:InvokeFunction
                 Resource: '*'
 
   # Lambda to create and populate Redshift table
@@ -134,7 +151,8 @@ Resources:
       Handler: index.lambda_handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: python3.12
-      Timeout: 300
+      MemorySize: 1024
+      Timeout: 60
       Environment:
         Variables:
           REDSHIFT_CLUSTER_ID: !Ref RedshiftCluster
@@ -144,6 +162,8 @@ Resources:
         ZipFile: |
           import json
           import boto3
+          import os
+          import time  # Import time module
 
           redshift_data = boto3.client('redshift-data')
 
@@ -152,6 +172,7 @@ Resources:
               database = os.environ['REDSHIFT_DATABASE']
               user = os.environ['REDSHIFT_USER']
               
+              # SQL to create the table
               create_table_sql = '''
               CREATE TABLE IF NOT EXISTS Stock_Prices (
                 date DATE PRIMARY KEY,
@@ -163,21 +184,62 @@ Resources:
               );
               '''
               
+              # SQL to insert data into the table
               insert_data_sql = '''
               INSERT INTO Stock_Prices (date, opening_price, high_price, low_price, closing_price, volume) VALUES
-              ('2020-01-01', 30.99, 32.29, 29.73, 33.22, 521854),
-              ('2020-02-01', 31.91, 33.01, 29.44, 31.90, 455711),
-              ('2020-03-01', 34.60, 34.88, 32.71, 34.24, 498106),
-              ('2020-04-01', 35.60, 36.30, 33.66, 37.49, 607249),
-              ('2020-05-01', 34.82, 35.25, 33.50, 34.38, 734688),
-              ('2020-06-01', 37.92, 38.82, 36.23, 39.09, 554057),
-              ('2020-07-01', 37.60, 38.47, 36.63, 36.34, 711245),
-              ('2020-08-01', 37.34, 38.80, 35.61, 38.73, 683580),
-              ('2020-09-01', 41.47, 41.84, 38.87, 40.22, 546891),
-              ('2020-10-01', 41.74, 43.07, 39.21, 43.61, 675111),
-              ('2020-11-01', 44.82, 45.88, 42.71, 45.20, 609983),
-              ('2020-12-01', 44.51, 45.54, 42.77, 44.26, 413252);
+              ('2020-01-31', 28.20, 28.58, 27.71, 27.99, 639855),
+              ('2020-02-29', 28.58, 29.54, 28.00, 28.40, 694109),
+              ('2020-03-31', 32.75, 34.16, 31.36, 32.33, 541490),
+              ('2020-04-30', 33.96, 34.84, 32.18, 33.77, 711992),
+              ('2020-05-31', 34.76, 35.38, 33.61, 34.69, 566927),
+              ('2020-06-30', 34.54, 35.74, 33.45, 33.91, 643404),
+              ('2020-07-31', 35.39, 36.69, 34.87, 35.69, 725215),
+              ('2020-08-31', 35.08, 35.71, 33.43, 34.74, 718860),
+              ('2020-09-30', 28.95, 29.76, 27.99, 28.82, 733239),
+              ('2020-10-31', 28.10, 28.81, 27.58, 28.01, 767595),
+              ('2020-11-30', 27.78, 28.92, 26.67, 27.78, 696718),
+              ('2020-12-31', 31.55, 31.96, 31.16, 31.54, 754802),
+              ('2021-01-31', 36.77, 38.71, 35.47, 37.23, 408938),
+              ('2021-02-28', 42.42, 43.56, 40.61, 42.29, 406286),
+              ('2021-03-31', 45.08, 46.51, 44.29, 44.96, 471452),
+              ('2021-04-30', 45.23, 47.70, 43.99, 45.66, 772716),
+              ('2021-05-31', 43.67, 44.67, 41.48, 43.25, 658660),
+              ('2021-06-30', 42.38, 42.81, 40.83, 42.20, 680618),
+              ('2021-07-31', 41.88, 43.83, 40.72, 41.65, 799118),
+              ('2021-08-31', 44.15, 46.26, 42.06, 44.37, 664617),
+              ('2021-09-30', 44.49, 46.38, 43.67, 44.11, 406118),
+              ('2021-10-31', 46.58, 48.67, 45.58, 46.58, 721162),
+              ('2021-11-30', 48.98, 51.17, 48.11, 48.77, 779052),
+              ('2021-12-31', 48.15, 50.48, 46.69, 48.78, 507300),
+              ('2022-01-31', 52.51, 53.37, 50.93, 51.84, 538675),
+              ('2022-02-28', 48.08, 48.98, 46.67, 47.66, 732635),
+              ('2022-03-31', 49.98, 52.47, 46.62, 49.03, 718598),
+              ('2022-04-30', 51.86, 53.43, 50.41, 52.52, 613918),
+              ('2022-05-31', 52.42, 53.16, 49.84, 51.65, 773558),
+              ('2022-06-30', 52.19, 55.39, 49.71, 52.90, 704647),
+              ('2022-07-31', 54.82, 57.53, 53.87, 55.41, 669366),
+              ('2022-08-31', 54.13, 56.59, 53.14, 53.71, 491629),
+              ('2022-09-30', 58.09, 61.53, 57.17, 58.89, 694396),
+              ('2022-10-31', 58.93, 60.64, 57.27, 58.01, 654888),
+              ('2022-11-30', 59.73, 61.27, 57.20, 59.72, 737651),
+              ('2022-12-31', 59.15, 62.14, 58.16, 59.98, 640063),
+              ('2023-01-31', 58.29, 60.53, 57.30, 58.18, 400740),
+              ('2023-02-28', 62.32, 64.59, 59.71, 62.75, 686850),
+              ('2023-03-31', 65.14, 66.38, 62.84, 65.38, 634571),
+              ('2023-04-30', 71.96, 72.90, 69.83, 71.47, 607461),
+              ('2023-05-31', 70.33, 72.06, 68.28, 69.26, 618838),
+              ('2023-06-30', 68.10, 71.27, 66.72, 68.80, 758162),
+              ('2023-07-31', 69.43, 70.59, 66.20, 68.34, 771461),
+              ('2023-08-31', 66.57, 70.77, 64.74, 67.72, 584648),
+              ('2023-09-30', 67.90, 71.62, 66.51, 68.96, 643386),
+              ('2023-10-31', 69.88, 70.66, 67.63, 69.35, 645507),
+              ('2023-11-30', 68.28, 70.50, 66.11, 67.62, 609524),
+              ('2023-12-31', 70.33, 72.82, 68.97, 71.14, 540517);
               '''
+              
+              # Wait for 10 seconds before executing the SQL statements
+              print("Waiting for 10 seconds before executing SQL...")
+              time.sleep(10)
               
               # Create the table
               response = redshift_data.execute_statement(
@@ -202,17 +264,69 @@ Resources:
                   'body': json.dumps('Stock Prices Table Created and Data Inserted!')
               }
 
-  # Custom resource to trigger Lambda after Redshift Cluster creation
-  LoadDataToRedshift:
-    DependsOn: RedshiftCluster
-    Type: Custom::LoadDataToRedshift
+
+  # Lambda to check Redshift availability and invoke CreateStockPriceTableLambda
+  CheckRedshiftStatusLambda:
+    Type: AWS::Lambda::Function
+    DependsOn: CreateStockPriceTableLambda  # Ensure CreateStockPriceTableLambda is created first
     Properties:
-      ServiceToken: !GetAtt CreateStockPriceTableLambda.Arn
-      cluster_id: !Ref RedshiftCluster
-      database: !Ref RedshiftDatabaseName
-      user: !Ref RedshiftUserName
+      Handler: index.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 128
+      Timeout: 300  # Increased timeout to allow polling
+      Environment:
+        Variables:
+          REDSHIFT_CLUSTER_ID: !Ref RedshiftCluster
+          TABLE_CREATION_LAMBDA: !GetAtt CreateStockPriceTableLambda.Arn
+      Code:
+        ZipFile: |
+          import boto3
+          import os
+          import time
+
+          redshift = boto3.client('redshift')
+          lambda_client = boto3.client('lambda')
+
+          def lambda_handler(event, context):
+              cluster_id = os.environ['REDSHIFT_CLUSTER_ID']
+              table_creation_lambda = os.environ['TABLE_CREATION_LAMBDA']
+
+              try:
+                  # Poll every 10 seconds to check if the cluster is available
+                  while True:
+                      response = redshift.describe_clusters(ClusterIdentifier=cluster_id)
+                      cluster_status = response['Clusters'][0]['ClusterStatus']
+                      print(f"Cluster Status: {cluster_status}")
+
+                      if cluster_status == 'available':
+                          # Invoke CreateStockPriceTableLambda once the cluster is available
+                          print(f"Invoking CreateStockPriceTableLambda: {table_creation_lambda}")
+                          lambda_client.invoke(FunctionName=table_creation_lambda, InvocationType='RequestResponse')
+                          return {
+                              'statusCode': 200,
+                              'body': 'Cluster is available, invoked CreateStockPriceTableLambda.'
+                          }
+                      
+                      time.sleep(10)
+
+              except Exception as e:
+                  print(f"Error: {str(e)}")
+                  return {
+                      'statusCode': 500,
+                      'body': f"Error: {str(e)}"
+                  }
+
+  # Custom Resource to invoke Lambda after creation
+  InvokeCheckRedshiftStatusLambda:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt CheckRedshiftStatusLambda.Arn
+    DependsOn: 
+      - CheckRedshiftStatusLambda
 
 Outputs:
   RedshiftClusterEndpoint:
     Description: Redshift Cluster Endpoint
     Value: !GetAtt RedshiftCluster.Endpoint.Address
+
