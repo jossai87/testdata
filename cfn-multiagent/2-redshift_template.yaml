@@ -284,6 +284,7 @@ Resources:
           import boto3
           import os
           import time
+          import cfnresponse  # Import cfnresponse to send status back to CloudFormation
 
           redshift = boto3.client('redshift')
           lambda_client = boto3.client('lambda')
@@ -303,6 +304,11 @@ Resources:
                           # Invoke CreateStockPriceTableLambda once the cluster is available
                           print(f"Invoking CreateStockPriceTableLambda: {table_creation_lambda}")
                           lambda_client.invoke(FunctionName=table_creation_lambda, InvocationType='RequestResponse')
+                          
+                          # Send a success response back to CloudFormation
+                          cfnresponse.send(event, context, cfnresponse.SUCCESS, {
+                              'Message': 'Cluster is available, invoked CreateStockPriceTableLambda.'
+                          })
                           return {
                               'statusCode': 200,
                               'body': 'Cluster is available, invoked CreateStockPriceTableLambda.'
@@ -312,6 +318,8 @@ Resources:
 
               except Exception as e:
                   print(f"Error: {str(e)}")
+                  # Send a failure response back to CloudFormation if an exception occurs
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {'Message': str(e)})
                   return {
                       'statusCode': 500,
                       'body': f"Error: {str(e)}"

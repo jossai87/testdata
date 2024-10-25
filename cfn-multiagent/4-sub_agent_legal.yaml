@@ -4,7 +4,7 @@ Description: CloudFormation template to create an AWS Bedrock Agent resource and
 Parameters:
   Alias:
     Type: String
-    Default: solution-library
+    Default: solutions-library-jo
     Description: Your alias 
 
 Resources:
@@ -298,7 +298,7 @@ Resources:
       AgentName: !Sub 'LegalAgent-sub-${AWS::AccountId}'
       AgentResourceRoleArn: !GetAtt LegalAgentExecutionRole.Arn
       AutoPrepare: 'True'
-      FoundationModel: 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+      FoundationModel: 'anthropic.claude-3-sonnet-20240229-v1:0'
       Instruction: |
         Your role is Legal Agent. Your goal is to analyze patents and lawsuits related to pharmaceutical products.
 
@@ -486,7 +486,6 @@ Resources:
             PromptCreationMode: "OVERRIDDEN"
             PromptState: "ENABLED"
             PromptType: "ORCHESTRATION"
-
 
   # Bedrock Agent Alias Resource
   LegalAgentAlias:

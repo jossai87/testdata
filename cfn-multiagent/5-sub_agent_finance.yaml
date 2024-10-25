@@ -4,7 +4,7 @@ Description: CloudFormation template to create an AWS Bedrock Agent resource and
 Parameters:
   Alias:
     Type: String
-    Default: solution-library
+    Default: solutions-library-jo
     Description: Your alias 
 
 Resources:
@@ -371,7 +371,7 @@ Resources:
       AgentName: !Sub 'FinanceAgent-sub-${AWS::AccountId}'
       AgentResourceRoleArn: !GetAtt FinanceAnalystExecutionRole.Arn
       AutoPrepare: 'True'
-      FoundationModel: 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+      FoundationModel: 'anthropic.claude-3-sonnet-20240229-v1:0'
       Instruction: |
         Your role is Finance Analyst. Your goal is to analyze financial data related to research budgets and stock prices using the tabular financial data and any business documents available to you.
 

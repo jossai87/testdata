@@ -265,7 +265,7 @@ Resources:
       AgentName: !Sub 'Main-Multiagents-${AWS::AccountId}'
       AgentResourceRoleArn: !GetAtt BedrockAgentExecutionRole.Arn
       AutoPrepare: 'True'
-      FoundationModel: 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+      FoundationModel: 'anthropic.claude-3-haiku-20240307-v1:0'
       #FoundationModel: 'anthropic.claude-3-haiku-20240307-v1:0'
       Instruction: |
         As a research and analysis coordinator agent, your role is to break down the task of analyzing pharmaceutical, legal, and financial business documents into smaller sub-tasks and guide the specialized agents to perform their specific actions step-by-step. Do not attempt to make any assumptions. The following agents are specialized in their respective areas:
@@ -556,6 +556,7 @@ Resources:
   # Lambda permission for API Gateway to invoke the function
   LambdaInvokePermissionForApiGateway:
     Type: 'AWS::Lambda::Permission'
+    DependsOn: LegalSubAgentStack
     Properties:
       FunctionName: !GetAtt InvokeAgents.Arn
       Action: 'lambda:InvokeFunction'

@@ -5,7 +5,7 @@ Description: CloudFormation template to create an AWS Bedrock Agent resource and
 Parameters:
   Alias:
     Type: String
-    Default: solution-library
+    Default: solutions-library-jo
     Description: Your alias 
 
 Resources:
@@ -274,7 +274,7 @@ Resources:
       AgentName: !Sub 'PharmaceuticalAgent-sub-${AWS::AccountId}'
       AgentResourceRoleArn: !GetAtt PharmaceuticalAgentExecutionRole.Arn
       AutoPrepare: 'True'
-      FoundationModel: 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+      FoundationModel: 'anthropic.claude-3-sonnet-20240229-v1:0'
       Instruction: |
         Your role is Pharmaceutical Agent. Your goal is to analyze drug development, clinical trials, and drug side effects to provide insights into drug mechanisms, therapeutic areas, development phases, trial outcomes, and side effect severity and frequency.
 

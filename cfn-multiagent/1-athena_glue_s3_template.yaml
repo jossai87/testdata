@@ -8,7 +8,7 @@ Parameters:
     Default: 'athena_db'
   Alias:
     Type: String
-    Default: 'sl-ma-jo'
+    Default: 'solutions-library-jo'
     Description: Name of the S3 bucket to create and store data   
 
 Resources:
@@ -362,6 +362,14 @@ Resources:
       Type: 'String'
       Value: !Sub "unstructured-data-${Alias}"
       Description: 'S3 bucket for unstructured data'
+
+  StructuredDataBucketSSMParameter:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: '/structuredData'
+      Type: 'String'
+      Value: !Sub "data-store-${Alias}"
+      Description: 'S3 bucket for structured data'
 
   LambdaExecutionRole:
     Type: 'AWS::IAM::Role'
