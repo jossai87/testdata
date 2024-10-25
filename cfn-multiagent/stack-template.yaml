@@ -8,43 +8,53 @@ Resources:
       TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/1-athena_glue_s3_template.yaml
       TimeoutInMinutes: 10
 
-  # Redshift Stack (Template 2) depends on Template 1
-  RedshiftStack:
+
+  # Knowledgebase Stack (Template 2) depends on Template 1
+  KnowledgebaseStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/2-redshift_template.yaml
+      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/2-knowledgebase_template.yaml
       TimeoutInMinutes: 10
     DependsOn: AthenaGlueS3Stack
 
-  # Pharmaceutical Sub-Agent Stack (Template 3) depends on Template 2
+
+  # Redshift Stack (Template 3) depends on Template 1
+  RedshiftStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/3-redshift_template.yaml
+      TimeoutInMinutes: 10
+    DependsOn: KnowledgebaseStack
+
+  # Pharmaceutical Sub-Agent Stack (Template 4) depends on Template 2
   PharmaceuticalSubAgentStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/3-sub_agent_pharmaceutical.yaml
+      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/4-sub_agent_pharmaceutical.yaml
       TimeoutInMinutes: 10
     DependsOn: RedshiftStack
 
-  # Legal Sub-Agent Stack (Template 4) depends on Template 3
+  # Legal Sub-Agent Stack (Template 5) depends on Template 3
   LegalSubAgentStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/4-sub_agent_legal.yaml
+      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/5-sub_agent_legal.yaml
       TimeoutInMinutes: 10
     DependsOn: PharmaceuticalSubAgentStack
 
-  # Finance Sub-Agent Stack (Template 5) depends on Template 4
+  # Finance Sub-Agent Stack (Template 6) depends on Template 4
   FinanceSubAgentStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/5-sub_agent_finance.yaml
+      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/6-sub_agent_finance.yaml
       TimeoutInMinutes: 10
     DependsOn: LegalSubAgentStack
 
-  # Main Agent API Gateway Stack (Template 6) depends on Template 5
+  # Main Agent API Gateway Stack (Template 7) depends on Template 5
   MainAgentApiGatewayStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/6-main_agent_apigw.yaml
+      TemplateURL: https://multiagent-bucket-jossai.s3.amazonaws.com/7-main_agent_apigw.yaml
       TimeoutInMinutes: 10
     DependsOn: FinanceSubAgentStack
 

@@ -1,0 +1,158 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template for Knowledge base with Amazon Opensearch Serverless vector database.
+Parameters:
+  Alias:
+    Type: String
+    Default: 'solutions-library'
+    Description: Name of the S3 bucket to create and store data   
+
+Resources:
+  BedrockKnowledgeBaseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "BedrockKnowledgeBaseRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "bedrock.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "BedrockKnowledgeBasePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # Permissions for Amazon Bedrock to access knowledge bases
+              - Effect: Allow
+                Action:
+                  - "bedrock:*"
+                Resource: "*"
+
+              # Permissions for OpenSearch Serverless
+              - Effect: Allow
+                Action:
+                  - "aoss:BatchPutDocument"
+                  - "aoss:DeleteCollection"
+                  - "aoss:DeleteSecurityPolicy"
+                  - "aoss:DescribeCollection"
+                  - "aoss:DescribeSecurityPolicy"
+                  - "aoss:GetSecurityPolicy"
+                  - "aoss:ListCollections"
+                  - "aoss:ListSecurityPolicies"
+                  - "aoss:UpdateCollection"
+                  - "aoss:UpdateSecurityPolicy"
+                  - "aoss:CreateCollection"
+                  - "aoss:CreateSecurityPolicy"
+                Resource: "*"
+
+              # Permissions for accessing data from S3 buckets
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}"
+                  - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}/*"
+
+  OpenSearchServerlessCollectionPharm:
+    Type: AWS::OpenSearchServerless::Collection
+    Properties:
+      Name: "kb-pharm-agent-clin-trials"
+      Description: "Collection clinical trial data for the pharmaceutical agent"
+      Type: "SEARCH"
+
+  OpenSearchServerlessEncryptionPolicyPharm:
+    Type: AWS::OpenSearchServerless::SecurityPolicy
+    Properties:
+      Name: "pharm-kb-encryption-policy"
+      Description: "Encryption policy for Knowledge Base collection"
+      Type: "encryption"
+      Policy: >
+        {"Rules":[{"ResourceType":"collection","Resource":["collection/kb-pharm-agent-clin-trials"]}],"AWSOwnedKey":true}
+
+  PharmKnowledgeBaseWithAoss:
+    Type: AWS::Bedrock::KnowledgeBase
+    Properties:
+      Name: 'pharm_agent_clin_trials'
+      Description: 'Collection clinical trial data for the pharmaceutical agent'
+      RoleArn: !GetAtt BedrockKnowledgeBaseRole.Arn
+      KnowledgeBaseConfiguration:
+        Type: "VECTOR"
+        VectorKnowledgeBaseConfiguration:
+          EmbeddingModelArn: !Sub "arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/amazon.titan-embed-text-v1"
+      StorageConfiguration:
+        Type: "OPENSEARCH_SERVERLESS"
+        OpensearchServerlessConfiguration:
+          CollectionArn: !GetAtt OpenSearchServerlessCollectionPharm.Arn
+          VectorIndexName: "cfn-test-index"
+          FieldMapping:
+            VectorField: "cfn-test-vector-field"
+            TextField: "text"
+            MetadataField: "metadata"
+    DependsOn: 
+      - OpenSearchServerlessEncryptionPolicyPharm
+      - BedrockKnowledgeBaseRole
+
+  PharmDataSource:
+    Type: AWS::Bedrock::DataSource
+    Properties:
+      KnowledgeBaseId: !Ref PharmKnowledgeBaseWithAoss
+      Name: 'pharm-agent-clin-trials-data-source'
+      Description: 'Collection clinical trial data for the pharmaceutical agent'
+      DataSourceConfiguration:
+        Type: "S3"
+        S3Configuration:
+          BucketArn: !Sub arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}
+          #InclusionPrefixes: ["aws-overview.pdf"]
+
+  OpenSearchServerlessCollectionLegal:
+    Type: AWS::OpenSearchServerless::Collection
+    Properties:
+      Name: "kb-legal-agent-legal-briefs"
+      Description: "Collection legal briefs data for the legal agent"
+      Type: "SEARCH"
+
+  OpenSearchServerlessEncryptionPolicyLegal:
+    Type: AWS::OpenSearchServerless::SecurityPolicy
+    Properties:
+      Name: "legal-kb-encryption-policy"
+      Description: "Encryption policy for Knowledge Base collection"
+      Type: "encryption"
+      Policy: >
+        {"Rules":[{"ResourceType":"collection","Resource":["collection/kb-legal-agent-legal-briefs"]}],"AWSOwnedKey":true}
+
+  LegalKnowledgeBaseWithAoss:
+    Type: AWS::Bedrock::KnowledgeBase
+    Properties:
+      Name: 'legal_agent_legal_briefs'
+      Description: 'Collection legal briefs data for the legal agent'
+      RoleArn: !GetAtt BedrockKnowledgeBaseRole.Arn
+      KnowledgeBaseConfiguration:
+        Type: "VECTOR"
+        VectorKnowledgeBaseConfiguration:
+          EmbeddingModelArn: !Sub "arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/amazon.titan-embed-text-v1"
+      StorageConfiguration:
+        Type: "OPENSEARCH_SERVERLESS"
+        OpensearchServerlessConfiguration:
+          CollectionArn: !GetAtt OpenSearchServerlessCollectionLegal.Arn
+          VectorIndexName: "cfn-test-index"
+          FieldMapping:
+            VectorField: "cfn-test-vector-field"
+            TextField: "text"
+            MetadataField: "metadata"
+    DependsOn: 
+      - OpenSearchServerlessEncryptionPolicyLegal
+      - BedrockKnowledgeBaseRole
+
+  LegalDataSource:
+    Type: AWS::Bedrock::DataSource
+    Properties:
+      KnowledgeBaseId: !Ref LegalKnowledgeBaseWithAoss
+      Name: 'legal-agent-legal-briefs-data-source'
+      Description: 'Collection legal briefs data for the legal agent'
+      DataSourceConfiguration:
+        Type: "S3"
+        S3Configuration:
+          BucketArn: !Sub arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}
+          #InclusionPrefixes: ["aws-overview.pdf"]

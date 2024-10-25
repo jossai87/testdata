@@ -15,12 +15,12 @@ Resources:
   LoggingBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub 'logging-bucket-${AWS::AccountId}-${Alias}'
+      BucketName: !Sub logging-bucket-${AWS::AccountId}-${AWS::Region}
 
   S3Bucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub data-store-${Alias}
+      BucketName: !Sub structured-data-${AWS::AccountId}-${AWS::Region}
       LoggingConfiguration:
         DestinationBucketName: !Ref LoggingBucket
         LogFilePrefix: 'logs/'
@@ -28,7 +28,7 @@ Resources:
   AthenaOutputBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub athena-output-${Alias}
+      BucketName: !Sub athena-output-${AWS::AccountId}-${AWS::Region}
       LoggingConfiguration:
         DestinationBucketName: !Ref LoggingBucket
         LogFilePrefix: 'logs/'
@@ -36,7 +36,7 @@ Resources:
   UnstructuredDataBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub unstructured-data-${Alias}
+      BucketName: !Sub unstructured-data-${AWS::AccountId}-${AWS::Region}
       LoggingConfiguration:
         DestinationBucketName: !Ref LoggingBucket
         LogFilePrefix: 'logs/'
@@ -58,7 +58,7 @@ Resources:
       Role: !GetAtt GlueServiceRole.Arn
       Targets:
         S3Targets:
-          - Path: !Sub "s3://data-store-${Alias}/drugtrials/"
+          - Path: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/drugtrials/"
       TablePrefix: 'drug_trials_'
 
   GlueCrawlerDrugs:
@@ -70,7 +70,7 @@ Resources:
       Role: !GetAtt GlueServiceRole.Arn
       Targets:
         S3Targets:
-          - Path: !Sub "s3://data-store-${Alias}/drugs/"
+          - Path: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/drugs/"
       TablePrefix: 'drugs_'
 
   GlueCrawlerLawsuits:
@@ -82,7 +82,7 @@ Resources:
       Role: !GetAtt GlueServiceRole.Arn
       Targets:
         S3Targets:
-          - Path: !Sub "s3://data-store-${Alias}/lawsuits/"
+          - Path: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/lawsuits/"
       TablePrefix: 'lawsuits_'
 
   GlueCrawlerPatents:
@@ -94,7 +94,7 @@ Resources:
       Role: !GetAtt GlueServiceRole.Arn
       Targets:
         S3Targets:
-          - Path: !Sub "s3://data-store-${Alias}/patents/"
+          - Path: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/patents/"
       TablePrefix: 'patents_'
 
   GlueCrawlerResearchBudgets:
@@ -106,7 +106,7 @@ Resources:
       Role: !GetAtt GlueServiceRole.Arn
       Targets:
         S3Targets:
-          - Path: !Sub "s3://data-store-${Alias}/researchbudget/"
+          - Path: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/researchbudget/"
       TablePrefix: 'research_budgets_'
 
   GlueCrawlerSideEffects:
@@ -118,7 +118,7 @@ Resources:
       Role: !GetAtt GlueServiceRole.Arn
       Targets:
         S3Targets:
-          - Path: !Sub "s3://data-store-${Alias}/sideeffects/"
+          - Path: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/sideeffects/"
       TablePrefix: 'side_effects_'
 
 
@@ -150,7 +150,7 @@ Resources:
               Type: 'float'
             - Name: 'outcome'
               Type: 'string'
-          Location: !Sub "s3://data-store-${Alias}/drugtrials/"
+          Location: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/drugtrials/"
           InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
           OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
           SerdeInfo: 
@@ -190,7 +190,7 @@ Resources:
               Type: 'int'
             - Name: 'lead_scientist'
               Type: 'string'
-          Location: !Sub "s3://data-store-${Alias}/drugs/"
+          Location: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/drugs/"
           InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
           OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
           SerdeInfo: 
@@ -228,7 +228,7 @@ Resources:
               Type: 'string'
             - Name: 'potential_liability'
               Type: 'decimal(15,2)'
-          Location: !Sub "s3://data-store-${Alias}/lawsuits/"
+          Location: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/lawsuits/"
           InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
           OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
           SerdeInfo: 
@@ -264,7 +264,7 @@ Resources:
               Type: 'string'
             - Name: 'estimated_value'
               Type: 'decimal(15,2)'
-          Location: !Sub "s3://data-store-${Alias}/patents/"
+          Location: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/patents/"
           InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
           OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
           SerdeInfo: 
@@ -298,7 +298,7 @@ Resources:
               Type: 'decimal(15,2)'
             - Name: 'spent_amount'
               Type: 'decimal(15,2)'
-          Location: !Sub "s3://data-store-${Alias}/researchbudget/"
+          Location: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/researchbudget/"
           InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
           OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
           SerdeInfo: 
@@ -332,7 +332,7 @@ Resources:
               Type: 'int'
             - Name: 'frequency'
               Type: 'float'
-          Location: !Sub "s3://data-store-${Alias}/sideeffects/"
+          Location: !Sub "s3://structured-data-${AWS::AccountId}-${AWS::Region}/sideeffects/"
           InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
           OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
           SerdeInfo: 
@@ -352,7 +352,7 @@ Resources:
     Properties:
       Name: '/athena/outputBucket'
       Type: 'String'
-      Value: !Sub 's3:///athena-output-${Alias}/'
+      Value: !Sub 's3:///athena-output-${AWS::AccountId}-${AWS::Region}/'
       Description: 'S3 output bucket for Athena query results'
 
   UnstructuredDataBucketSSMParameter:
@@ -360,7 +360,7 @@ Resources:
     Properties:
       Name: '/unstructuredData'
       Type: 'String'
-      Value: !Sub "unstructured-data-${Alias}"
+      Value: !Sub "unstructured-data-${AWS::AccountId}-${AWS::Region}"
       Description: 'S3 bucket for unstructured data'
 
   StructuredDataBucketSSMParameter:
@@ -368,7 +368,7 @@ Resources:
     Properties:
       Name: '/structuredData'
       Type: 'String'
-      Value: !Sub "data-store-${Alias}"
+      Value: !Sub "structured-data-${AWS::AccountId}-${AWS::Region}"
       Description: 'S3 bucket for structured data'
 
   LambdaExecutionRole:
@@ -392,12 +392,12 @@ Resources:
                   - 's3:GetObject'
                   - 's3:ListBucket'
                 Resource: 
-                  - !Sub "arn:aws:s3:::data-store-${Alias}/*"
-                  - !Sub "arn:aws:s3:::data-store-${Alias}"
-                  - !Sub "arn:aws:s3:::athena-output-${Alias}/*"
-                  - !Sub "arn:aws:s3:::athena-output-${Alias}"
-                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}/*"
-                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}"
+                  - !Sub "arn:aws:s3:::structured-data-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::structured-data-${AWS::AccountId}-${AWS::Region}"
+                  - !Sub "arn:aws:s3:::athena-output-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::athena-output-${AWS::AccountId}-${AWS::Region}"
+                  - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}"
               - Effect: Allow
                 Action:
                   - 'logs:CreateLogGroup'
@@ -464,13 +464,13 @@ Resources:
                   return {"status": "failed", "error": str(e)}
       Environment:
         Variables:
-          S3BucketName: !Sub 'data-store-${Alias}'
+          S3BucketName: !Sub 'structured-data-${AWS::AccountId}-${AWS::Region}'
 
   CopyDataCustomResource:
     Type: 'Custom::CopyData'
     Properties:
       ServiceToken: !GetAtt CopyDataLambda.Arn
-      S3BucketName: !Sub data-store-${Alias}
+      S3BucketName: !Sub structured-data-${AWS::AccountId}-${AWS::Region}
 
   CopyUnstructuredDataLambda:
     Type: 'AWS::Lambda::Function'
@@ -561,13 +561,13 @@ Resources:
                   return {"status": "failed", "error": str(e)}
       Environment:
         Variables:
-          UnstructuredDataBucketName: !Sub 'unstructured-data-${Alias}'
+          UnstructuredDataBucketName: !Sub 'unstructured-data-${AWS::AccountId}-${AWS::Region}'
 
   CopyUnstructuredDataCustomResource:
     Type: 'Custom::CopyUnstructuredData'
     Properties:
       ServiceToken: !GetAtt CopyUnstructuredDataLambda.Arn
-      UnstructuredDataBucketName: !Sub unstructured-data-${Alias}
+      UnstructuredDataBucketName: !Sub unstructured-data-${AWS::AccountId}-${AWS::Region}
 
 
   GlueServiceRole:
@@ -591,12 +591,12 @@ Resources:
                   - 's3:PutObject'
                   - 's3:ListBucket'
                 Resource: 
-                  - !Sub "arn:aws:s3:::data-store-${Alias}/*"
-                  - !Sub "arn:aws:s3:::data-store-${Alias}"
-                  - !Sub "arn:aws:s3:::athena-output-${Alias}/*"
-                  - !Sub "arn:aws:s3:::athena-output-${Alias}"
-                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}/*"
-                  - !Sub "arn:aws:s3:::unstructured-data-${Alias}"
+                  - !Sub "arn:aws:s3:::structured-data-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::structured-data-${AWS::AccountId}-${AWS::Region}"
+                  - !Sub "arn:aws:s3:::athena-output-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::athena-output-${AWS::AccountId}-${AWS::Region}"
+                  - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}"
               - Effect: Allow
                 Action:
                   - 'glue:CreateCrawler'
@@ -612,12 +612,12 @@ Outputs:
 
   S3BucketName:
     Description: 'Name of the S3 bucket created'
-    Value: !Sub data-store-${Alias}
+    Value: !Sub structured-data-${AWS::AccountId}-${AWS::Region}
 
   AthenaOutputBucketName:
     Description: 'Name of the S3 bucket for Athena query results'
-    Value: !Sub athena-output-${Alias}
+    Value: !Sub athena-output-${AWS::AccountId}-${AWS::Region}
 
   UnstructuredDataBucketName:
     Description: 'Name of the secondary S3 bucket for unstructured data'
-    Value: !Sub unstructured-data-${Alias}
+    Value: !Sub unstructured-data-${AWS::AccountId}-${AWS::Region}

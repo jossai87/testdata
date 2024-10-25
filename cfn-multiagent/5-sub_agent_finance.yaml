@@ -60,8 +60,8 @@ Resources:
                   - 's3:GetObject'
                   - 's3:ListBucket'
                 Resource: 
-                  - !Sub "arn:aws:s3:::athena-output-${Alias}/*"
-                  - !Sub "arn:aws:s3:::athena-output-${Alias}"
+                  - !Sub "arn:aws:s3:::athena-output-${AWS::AccountId}-${AWS::Region}/*"
+                  - !Sub "arn:aws:s3:::athena-output-${AWS::AccountId}-${AWS::Region}"
               # Add SSM GetParameter permissions
               - Effect: Allow
                 Action:
@@ -527,7 +527,7 @@ Resources:
                     ROW FORMAT DELIMITED 
                     FIELDS TERMINATED BY ',' 
                     LINES TERMINATED BY '\n' 
-                    STORED AS TEXTFILE LOCATION 's3://data-store-${Alias}/research_budgets/'; 
+                    STORED AS TEXTFILE LOCATION 's3://structured-data-${AWS::AccountId}-${AWS::Region}/research_budgets/'; 
                     </athena_schema>
                   </athena_schemas>
               
