@@ -1,0 +1,604 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create an AWS Bedrock Agent resource and Lambda function.
+
+Resources:
+  # IAM Managed Policy for CloudWatch Logs
+  CloudWatchLogsPolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*:*"
+
+  # IAM Role for Lambda Function Execution
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambdaExecute
+        - arn:aws:iam::aws:policy/AmazonBedrockFullAccess
+        - !Ref CloudWatchLogsPolicy
+      Policies:
+        - PolicyName: 'LambdaCustomPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'sqs:SendMessage'
+                Resource: !GetAtt ActionCallDLQmain.Arn
+
+  # IAM Managed Policy for Lambda Invocation
+  LambdaInvokePolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'lambda:InvokeFunction'
+            Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
+
+  # IAM Role for Bedrock Agent
+  BedrockAgentExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonBedrockFullAccess
+        - !Ref LambdaInvokePolicy
+
+  # SQS Queue for Dead Letter Queue (DLQ)
+  ActionCallDLQmain:
+    Type: 'AWS::SQS::Queue'
+    Properties:
+      QueueName: !Sub "ActionCallDLQmain-${AWS::AccountId}-${AWS::Region}"
+
+  # Lambda Function for Action Call
+  MainAgentFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub 'MainAgentFunction-${AWS::AccountId}'
+      Handler: index.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 120
+      Environment:
+        Variables:
+          pharmaceutical_analyst_id: !ImportValue PharmaceuticalAgentIds
+          legal_analyst_id: !ImportValue LegalAgentIds
+          finance_analyst_id: !ImportValue FinanceAgentIds
+
+      DeadLetterConfig:
+        TargetArn: !GetAtt ActionCallDLQmain.Arn
+      Code:
+        ZipFile: |
+          from botocore.exceptions import ClientError
+          from time import sleep
+          import logging
+          import json
+          import os
+          import boto3
+
+          # Initialize clients and set up logging
+          agents_runtime_client = boto3.client('bedrock-agent-runtime', region_name=os.environ["AWS_REGION"])
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          os.environ["AWS_REGION"] = "us-east-1"
+          region = os.environ.get("AWS_REGION")
+
+          def lambda_handler(event, context):
+              # Retrieve and split the concatenated ID and Alias values
+              subagent1id, subagent1alias = os.environ.get("pharmaceutical_analyst_id", "").split("|")
+              subagent2id, subagent2alias = os.environ.get("legal_analyst_id", "").split("|")
+              subagent3id, subagent3alias = os.environ.get("finance_analyst_id", "").split("|")
+              
+              # Extract sessionId from the event and set it as active_agent_session
+              active_agent_session = event.get('sessionId', 'default-session-id')
+
+              def get_query_value_from_event(event):
+                  # Loop through each item in the parameters list
+                  for parameter in event.get('parameters', []):
+                      if parameter.get('name') == 'question':
+                          print("VALUE RETURNED: ", parameter.get('value'))
+                          return parameter.get('value')
+
+              #----------------- METHODS FOR AGENTS -----------------
+
+              def pharmaceutical_call(event):
+                  print("PRINT: ", event)
+                  agent_Id = subagent1id
+                  agentAlias_Id = subagent1alias
+                  session_Id = active_agent_session
+                  query_value = event['requestBody']['content']['application/json']['properties'][0]['value']
+                  print("QUERY VALUE: ", query_value)
+                  
+                  response = agents_runtime_client.invoke_agent(
+                      agentId=agent_Id,
+                      agentAliasId=agentAlias_Id,
+                      sessionId=session_Id,
+                      inputText=query_value
+                  )
+                  print("RESPONSE: ", response)
+                  completion = ""
+
+                  try:
+                      for event in response.get("completion"):
+                          chunk = event["chunk"]
+                          completion = completion + chunk["bytes"].decode()
+                          print("COMPLETION: ", completion)
+                  except ClientError as e:
+                      logger.error(f"Couldn't invoke agent. {e}")
+                      raise
+                  
+                  return completion
+
+              def legal_call(event):
+                  agent_Id = subagent2id
+                  agentAlias_Id = subagent2alias
+                  session_Id = active_agent_session
+                  print("EVENT: ", event)
+                  
+                  query_value = event['requestBody']['content']['application/json']['properties'][0]['value']
+                  print("QUERY VALUE: ", query_value)
+                  
+                  response = agents_runtime_client.invoke_agent(
+                      agentId=agent_Id,
+                      agentAliasId=agentAlias_Id,
+                      sessionId=session_Id,
+                      inputText=query_value
+                  )
+                  print("RESPONSE: ", response)
+                  completion = ""
+
+                  try:
+                      for event in response.get("completion"):
+                          chunk = event["chunk"]
+                          completion = completion + chunk["bytes"].decode()
+                          print("COMPLETION: ", completion)
+                  except ClientError as e:
+                      logger.error(f"Couldn't invoke agent. {e}")
+                      raise
+                  sleep(1)
+                  return completion
+
+              def finance_call(event):
+                  agent_Id = subagent3id
+                  agentAlias_Id = subagent3alias
+                  session_Id = active_agent_session
+                  print("EVENT: ", event)
+                  
+                  query_value = event['requestBody']['content']['application/json']['properties'][0]['value']
+                  print("QUERY VALUE: ", query_value)
+                  
+                  response = agents_runtime_client.invoke_agent(
+                      agentId=agent_Id,
+                      agentAliasId=agentAlias_Id,
+                      sessionId=session_Id,
+                      inputText=query_value
+                  )
+                  print("RESPONSE: ", response)
+                  completion = ""
+
+                  try:
+                      for event in response.get("completion"):
+                          chunk = event["chunk"]
+                          completion = completion + chunk["bytes"].decode()
+                          print("COMPLETION: ", completion)
+                  except ClientError as e:
+                      logger.error(f"Couldn't invoke agent. {e}")
+                      raise
+                  sleep(1)
+                  return completion
+
+
+
+              #----------------- MAIN LOGIC -----------------
+
+              action_group = event.get('actionGroup')
+              api_path = event.get('apiPath')
+              response_code = 200
+              result = ""
+
+              if api_path == '/pharmaceutical_agent':
+                  result = pharmaceutical_call(event)
+              elif api_path == '/legal_agent':
+                  result = legal_call(event)
+              elif api_path == '/finance_agent':
+                  result = finance_call(event)           
+              else:
+                  response_code = 404
+                  result = {"error": f"Unrecognized api path: {action_group}::{api_path}"}
+
+              response_body = {
+                  'application/json': {
+                      'body': json.dumps(result)
+                  }
+              }
+
+              action_response = {
+                  'actionGroup': action_group,
+                  'apiPath': api_path,
+                  'httpMethod': event.get('httpMethod'),
+                  'httpStatusCode': response_code,
+                  'responseBody': response_body
+              }
+
+              api_response = {'messageVersion': '1.0', 'response': action_response}
+              return api_response
+
+
+  # Lambda Permission for Bedrock to Invoke Lambda
+  LambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn: MainAgentFunction
+    Properties:
+      FunctionName: !GetAtt MainAgentFunction.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: 'bedrock.amazonaws.com'
+      SourceArn: !Sub 'arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*'
+
+  # Bedrock Agent Resource
+  BedrockAgent:
+    Type: "AWS::Bedrock::Agent"
+    DependsOn: LambdaInvokePermission
+    Properties:
+      AgentName: !Sub 'Main-Multiagents-${AWS::AccountId}'
+      AgentResourceRoleArn: !GetAtt BedrockAgentExecutionRole.Arn
+      AutoPrepare: 'True'
+      FoundationModel: 'anthropic.claude-3-haiku-20240307-v1:0'
+      #FoundationModel: 'anthropic.claude-3-haiku-20240307-v1:0'
+      Instruction: |
+        You are a research analyst at a pharmaceutical company, PharmaCorp, with three major divisions - Pharmaceutical, Legal, and Finance. Each division has a specialized expert that you are able to converse with. 
+
+        The division experts have access to the following data:
+        <pharmaceutical_data>
+        The pharmaceutical expert has access to information about PharmaCorp's drugs (name, therapeutic area, phase of development, target condition, mechanism of action, year discovered, and lead scientist), clinical trials related to those drugs (drug name, start date, end date, phase, number of participants, success rate, outcome, and detailed clinical trial reports), and side effects from the clinical trials (effect name, related trial, severity, and frequency. 
+        </pharmaceutical_data>
+
+        <legal_data>
+        The legal expert has access to information about PharmaCorp's patents (method description, filing date, approval date, expiration date, estimated value) and lawsuits (filing data, plaintiff type - individual or class action, allegation type, related medical condition description, status, potential liability accounts, and detailed legal briefs of each lawsuit). 
+        </legal_data>
+
+        <finance_data>
+        The finance expert has access to information about PharmaCorp's research budgets (year, department, allocated amount, and spent amount) and stocks (date, opening price, high price, low price, closing price, volume). 
+        </finance_data>
+
+        Your task is to break research questions down into sub-questions that you can ask each division expert and synthesize information from the division experts to answer the overall question. To do this:
+
+        1. Think about what information you need or could need to answer the question. 
+        2. Figure out what questions to ask the division experts to obtain the information you need. You may ask questions back and forth between agents multiple times.
+        3. Ask each expert your questions.  When asking questions, pass any context necessary from the overall research question or from other experts in <context></context> tags. 
+            3a. Specifically note that some data only has descriptions, so you may need to ask the expert to retrieve a subset of data based on dates or another deterministic filter, and then do an analysis of the retrieved data yourself based on other information you know. 
+        4. Synthesize the information received from each expert into an overall answer to the research question. 
+        5. Do not make up any information. If any data is unavailable, clearly indicate this.
+
+        When going through this process, outline you thinking for steps 1 and 2 in <overall_plan></overall_plan> tags. Before asking an expert a question (step 3), outline your thinking for the context you are passing to them in <context_plan></context_plan> tags. 
+
+
+      Description: "Generative AI Tool for Pharmaceutical Research, Legal Case Analysis, and Financial Data."
+      IdleSessionTTLInSeconds: 900
+      ActionGroups:
+        - ActionGroupName: "call-subagent"
+          Description: "This action group is used call a sub agent based on task"
+          ActionGroupExecutor:
+            Lambda: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:MainAgentFunction-${AWS::AccountId}'
+          ApiSchema:
+            Payload: |
+              openapi: 3.0.0
+              info:
+                title: Combined Pharmaceutical, Legal, and Financial API
+                version: 1.0.2
+                description: Use natural language to create queries for drug development, clinical trials, legal cases, patents, research budgets, and stock prices.
+
+              paths:
+                /pharmaceutical_agent:
+                  post:
+                    summary: Ask natural language questions to retrieve drug, clinical trial, or side effect data.
+                    description: Extract key data points related to drug development, clinical trials, or side effects.
+                    operationId: askPharmaceuticalAgentQuestion
+                    requestBody:
+                      required: true
+                      content:
+                        application/json:
+                          schema:
+                            type: object
+                            properties:
+                              context_and_question:
+                                type: string
+                                description: The context of the conversation among agents in <context></context> tag, followed by the question related to drug, clinical trial, or side effect data.
+                            required:
+                              - context_and_question
+                    responses:
+                      "200":
+                        description: Successful response with pharmaceutical query results
+                        content:
+                          application/json:
+                            schema:
+                              type: object
+                              properties:
+                                ResultSet:
+                                  type: array
+                                  items:
+                                    type: object
+                                    description: A single row of pharmaceutical data results
+
+                /legal_agent:
+                  post:
+                    summary: Ask natural language questions to retrieve legal case or patent data.
+                    description: Extract key legal case details (plaintiff type, allegations, liabilities) or patent information (filing date, expiration date, value).
+                    operationId: askLegalAgentQuestion
+                    requestBody:
+                      required: true
+                      content:
+                        application/json:
+                          schema:
+                            type: object
+                            properties:
+                              context_and_question:
+                                type: string
+                                description: The context of the conversation among agents in <context></context> tag, followed by the question related to legal case or patent data.
+                            required:
+                              - context_and_question
+                    responses:
+                      "200":
+                        description: Successful response with legal case or patent data.
+                        content:
+                          application/json:
+                            schema:
+                              type: object
+                              properties:
+                                ResultSet:
+                                  type: array
+                                  items:
+                                    type: object
+                                    description: A single row of legal case or patent data results
+
+                /finance_agent:
+                  post:
+                    summary: Ask natural language questions to retrieve research budget or stock price data.
+                    description: Extract financial data related to research budgets or stock prices from the respective documents.
+                    operationId: askFinanceAgentQuestion
+                    requestBody:
+                      required: true
+                      content:
+                        application/json:
+                          schema:
+                            type: object
+                            properties:
+                              context_and_question:
+                                type: string
+                                description: The context of the conversation among agents in <context></context> tag, followed by the question related to financial data (research budget or stock prices).
+                            required:
+                              - context_and_question
+                    responses:
+                      "200":
+                        description: Successful response with financial query results.
+                        content:
+                          application/json:
+                            schema:
+                              type: object
+                              properties:
+                                ResultSet:
+                                  type: array
+                                  items:
+                                    type: object
+                                    description: A single row of financial data results          
+  
+  # Bedrock Agent Alias Resource
+  BedrockAgentAlias:
+    Type: 'AWS::Bedrock::AgentAlias'
+    DependsOn: BedrockAgent
+    Properties:
+      AgentAliasName: !Sub 'Alias-1'
+      AgentId: !GetAtt BedrockAgent.AgentId
+
+
+  # Lambda Function Role for InvokeAgents
+  InvokeAgentsExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonBedrockFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - !Ref CloudWatchLogsPolicy
+
+  # Update InvokeAgents to ensure it is created after BedrockAgentAlias and BedrockAgent
+  InvokeAgents:
+    Type: 'AWS::Lambda::Function'
+    DependsOn: 
+      - BedrockAgentAlias
+      - BedrockAgent
+    Properties:
+      FunctionName: !Sub 'InvokeAgents-${AWS::AccountId}'
+      Handler: index.lambda_handler
+      Role: !GetAtt InvokeAgentsExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 120
+      Environment:
+        Variables:
+          # Ensure that the Agent Alias ID and Agent ID are properly concatenated using !Join
+          AGENT_ALIAS_ID_AGENT_ID: !Join [ '|', [ !GetAtt BedrockAgentAlias.AgentAliasId, !GetAtt BedrockAgent.AgentId ] ]
+      Code:
+        ZipFile: |
+          from botocore.exceptions import ClientError
+          import logging
+          import json
+          import os
+          import boto3
+
+          # Initialize clients and set up logging
+          agents_runtime_client = boto3.client('bedrock-agent-runtime', region_name=os.environ["AWS_REGION"])
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          def lambda_handler(event, context):
+              # Set the region from the environment variable or default to 'us-east-1'
+              os.environ["AWS_REGION"] = os.getenv("AWS_REGION", "us-east-1")
+              region = os.environ.get("AWS_REGION")
+
+              # Retrieve and split environment variable
+              agent_alias_id_agent_id = os.getenv("AGENT_ALIAS_ID_AGENT_ID", "")
+              agentAlias_Id, agent_Id = agent_alias_id_agent_id.split('|')
+
+              logger.info(f"Agent Alias ID: {agentAlias_Id}")
+              logger.info(f"Agent ID: {agent_Id}")
+
+              # Parse the event coming from API Gateway
+              try:
+                  # API Gateway sends the body as a string, so we need to parse it
+                  request_body = json.loads(event['body'])
+
+                  # Look for the "prompt" key in the request body
+                  query_value = request_body.get('prompt')
+                  
+                  if query_value is None:
+                      raise KeyError("Missing 'prompt' in request body")
+
+                  logger.info(f"Prompt Query Value: {query_value}")
+
+              except (KeyError, json.JSONDecodeError) as e:
+                  logger.error(f"Error parsing request: {e}")
+                  return {
+                      "statusCode": 400,
+                      "body": json.dumps({
+                          "message": "Invalid request format or 'prompt' key not found"
+                      })
+                  }
+
+              # Call the agent
+              response = call_agent(agentAlias_Id, agent_Id, query_value)
+              
+              return {
+                  "statusCode": 200,
+                  "body": json.dumps(response)
+              }
+
+          def call_agent(agentAlias_Id, agent_Id, query_value):
+              session_Id = 'MYSESSION'
+              
+              try:
+                  response = agents_runtime_client.invoke_agent(
+                      agentId=agent_Id,
+                      agentAliasId=agentAlias_Id,
+                      sessionId=session_Id,
+                      inputText=query_value
+                  )
+                  
+                  completion = ""
+
+                  # Retrieve and process the completion event
+                  for event in response.get("completion", []):
+                      chunk = event.get("chunk")
+                      completion += chunk.get("bytes", b"").decode()
+                      logger.info(f"Completion: {completion}")
+                  
+                  return {
+                      "completion": completion
+                  }
+              
+              except ClientError as e:
+                  logger.error(f"Couldn't invoke agent. {e}")
+                  raise    
+
+  # Amazon API Gateway Integration
+  ApiGatewayRestApi:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: !Sub 'InvokeMainAgentAPI-${AWS::AccountId}'
+      Description: API Gateway to invoke the Lambda function for agent interaction
+
+  ApiGatewayResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: 'invoke'
+
+  ApiGatewayMethodInvoke:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'POST'
+      ResourceId: !Ref ApiGatewayResource
+      RestApiId: !Ref ApiGatewayRestApi
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        Type: 'AWS_PROXY'
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${InvokeAgents.Arn}/invocations'
+
+  ApiGatewayDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn: ApiGatewayMethodInvoke
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: 'dev'
+
+  # Lambda permission for API Gateway to invoke the function
+  LambdaInvokePermissionForApiGateway:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt InvokeAgents.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: 'apigateway.amazonaws.com'
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/POST/invoke'
+
+
+Outputs:
+  # Output for the Bedrock Agent Name
+  BedrockAgentName:
+    Description: 'Name of the Bedrock Agent created'
+    Value: !Ref BedrockAgent
+
+  # Output for the Lambda Function ARN
+  MainAgentFunctionArn:
+    Description: 'ARN of the MainAgentFunction Lambda function'
+    Value: !GetAtt MainAgentFunction.Arn
+
+  # Output and export for the Bedrock Agent ID
+  BedrockAgentId:
+    Description: 'ID of the Bedrock Agent'
+    Value: !GetAtt BedrockAgent.AgentId
+    Export:
+      Name: BedrockAgentId
+
+  # Output and export for the Bedrock Agent Alias ID
+  BedrockAgentAliasId:
+    Description: 'Alias ID of the Bedrock Agent'
+    Value: !Ref BedrockAgentAlias
+    Export:
+      Name: BedrockAgentAliasId
+
+  ApiGatewayInvokeUrl:
+    Description: 'Invoke URL for the API Gateway'
+    Value: !Sub 'https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/invoke'

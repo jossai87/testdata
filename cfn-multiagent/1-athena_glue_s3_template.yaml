@@ -8,7 +8,7 @@ Parameters:
     Default: 'athena_db'
   Alias:
     Type: String
-    Default: 'solutions-library-jo'
+    Default: 'bedrock-multiagent'
     Description: Name of the S3 bucket to create and store data   
 
 Resources:

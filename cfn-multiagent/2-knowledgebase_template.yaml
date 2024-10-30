@@ -1,9 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: A sample template for Knowledge base with Amazon Opensearch Serverless vector database.
+Description: A sample template for Knowledge base with Amazon OpenSearch Serverless vector database.
+
 Parameters:
   Alias:
     Type: String
-    Default: 'solutions-library'
+    Default: 'bedrock-multiagent'
     Description: Name of the S3 bucket to create and store data   
 
 Resources:
@@ -18,35 +19,38 @@ Resources:
             Principal:
               Service: "bedrock.amazonaws.com"
             Action: "sts:AssumeRole"
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+              ArnLike:
+                AWS:SourceArn: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:knowledge-base/*"
       Policies:
         - PolicyName: "BedrockKnowledgeBasePolicy"
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              # Permissions for Amazon Bedrock to access knowledge bases
               - Effect: Allow
                 Action:
-                  - "bedrock:*"
+                  - "bedrock:InvokeModel"
+                  - "bedrock:InvokeModelWithResponseStream"
+                  - "bedrock:RetrieveAndGenerate"
                 Resource: "*"
-
-              # Permissions for OpenSearch Serverless
               - Effect: Allow
                 Action:
-                  - "aoss:BatchPutDocument"
-                  - "aoss:DeleteCollection"
-                  - "aoss:DeleteSecurityPolicy"
-                  - "aoss:DescribeCollection"
-                  - "aoss:DescribeSecurityPolicy"
-                  - "aoss:GetSecurityPolicy"
-                  - "aoss:ListCollections"
-                  - "aoss:ListSecurityPolicies"
-                  - "aoss:UpdateCollection"
-                  - "aoss:UpdateSecurityPolicy"
+                  - "bedrock:*"  # For full knowledge base operations
+                  - "bedrock:QueryKnowledgeBase"
+                  - "bedrock:Retrieve"
+                Resource: 
+                  - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:knowledge-base/*"                
+              - Effect: Allow
+                Action:
+                  - "aoss:APIAccessAll"
+                  - "aoss:DashboardsAccessAll"
                   - "aoss:CreateCollection"
+                  - "aoss:DeleteCollection"
                   - "aoss:CreateSecurityPolicy"
-                Resource: "*"
-
-              # Permissions for accessing data from S3 buckets
+                  - "aoss:CreateAccessPolicy"
+                Resource: !Sub "arn:aws:aoss:${AWS::Region}:${AWS::AccountId}:collection/*"
               - Effect: Allow
                 Action:
                   - "s3:GetObject"
@@ -54,22 +58,292 @@ Resources:
                 Resource:
                   - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}"
                   - !Sub "arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}/*"
-
-  OpenSearchServerlessCollectionPharm:
-    Type: AWS::OpenSearchServerless::Collection
+              - Effect: Allow
+                Action:
+                  - "kms:Decrypt"
+                  - "kms:GenerateDataKey"
+                Resource: "*"
+                Condition:
+                  StringEquals:
+                    aws:ResourceAccount: !Ref AWS::AccountId
+                  StringLike:
+                    kms:ViaService:
+                      - !Sub "s3.${AWS::Region}.amazonaws.com"
+                      - !Sub "secretsmanager.${AWS::Region}.amazonaws.com"
+                  
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
     Properties:
-      Name: "kb-pharm-agent-clin-trials"
-      Description: "Collection clinical trial data for the pharmaceutical agent"
-      Type: "SEARCH"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'LambdaIndexCreationPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - aoss:CreateCollection
+                  - aoss:ListCollections
+                  - aoss:BatchGetCollection
+                  - aoss:DeleteCollection
+                  - aoss:CreateAccessPolicy
+                  - aoss:ListAccessPolicies
+                  - aoss:UpdateAccessPolicy
+                  - aoss:CreateSecurityPolicy
+                  - aoss:GetSecurityPolicy
+                  - aoss:UpdateSecurityPolicy
+                  - aoss:ListUsers
+                  - aoss:ListRoles
+                  - aoss:CreateIndex
+                  - aoss:DeleteIndex
+                  - aoss:UpdateIndex
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: 'arn:aws:logs:*:*:*'
+              - Effect: Allow
+                Action:
+                  - aoss:APIAccessAll
+                  - aoss:DashboardsAccessAll
+                Resource: 
+                  - !Sub "arn:aws:aoss:${AWS::Region}:${AWS::AccountId}:collection/*"
+                  - !Sub "arn:aws:aoss:${AWS::Region}:${AWS::AccountId}:dashboards/default"
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
 
+  # Lambda Layer to include requests and requests-aws4auth
+  OpenSearchLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: "requests-aws4auth-ospy-layer"
+      Content:
+        S3Bucket: "multi-agent-storage"
+        S3Key: "layer_req-reqaws4auth-ospy.zip"
+      CompatibleRuntimes:
+        - python3.12
+      Description: "Lambda Layer with requests and requests-aws4auth libraries for OpenSearch Serverless"
+
+  PharmDataAccessPolicy:
+      Type: 'AWS::OpenSearchServerless::AccessPolicy'
+      Properties:
+        Name: pharm-access-policy
+        Type: data
+        Description: Access policy for pharmaceutical collection
+        Policy: !Sub >-
+          [{
+            "Description": "Access for Lambda function",
+            "Rules": [
+              {"ResourceType": "index", "Resource": ["index/*/*"], "Permission": ["aoss:*"]},
+              {"ResourceType": "collection", "Resource": ["collection/kb-pharm-agent-clin-trials"], "Permission": ["aoss:*"]}
+            ],
+            "Principal": ["arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"]
+          }]
+
+  LegalDataAccessPolicy:
+      Type: 'AWS::OpenSearchServerless::AccessPolicy'
+      Properties:
+        Name: legal-access-policy
+        Type: data
+        Description: Access policy for legal collection
+        Policy: !Sub >-
+          [{
+            "Description": "Access for Lambda function",
+            "Rules": [
+              {"ResourceType": "index", "Resource": ["index/*/*"], "Permission": ["aoss:*"]},
+              {"ResourceType": "collection", "Resource": ["collection/kb-legal-agent-legal-briefs"], "Permission": ["aoss:*"]}
+            ]
+            "Principal": ["arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"]
+          }]
+
+  # Custom Resource to trigger index creation
+  OpenSearchIndexCreation:
+    Type: Custom::OpenSearchIndexCreation
+    Properties:
+      ServiceToken: !GetAtt OpenSearchIndexLambda.Arn
+      CollectionName: "kb-pharm-agent-clin-trials"
+      IndexName: "kb-vector-index"
+      FieldMappings:
+        - FieldName: "vector_field"
+          FieldType: "VECTOR"
+        - FieldName: "text"
+          FieldType: "TEXT"
+        - FieldName: "metadata"
+          FieldType: "KEYWORD"
+
+# Pharmaceutical Collection and Policies
   OpenSearchServerlessEncryptionPolicyPharm:
     Type: AWS::OpenSearchServerless::SecurityPolicy
     Properties:
       Name: "pharm-kb-encryption-policy"
       Description: "Encryption policy for Knowledge Base collection"
       Type: "encryption"
-      Policy: >
-        {"Rules":[{"ResourceType":"collection","Resource":["collection/kb-pharm-agent-clin-trials"]}],"AWSOwnedKey":true}
+      Policy: '{"Rules":[{"ResourceType":"collection","Resource":["collection/kb-pharm-agent-clin-trials"]}],"AWSOwnedKey":true}'
+
+  OpenSearchServerlessNetworkPolicyPharm:
+    Type: AWS::OpenSearchServerless::SecurityPolicy
+    Properties:
+      Name: "pharm-kb-network-policy"
+      Description: "Network policy for Knowledge Base collection"
+      Type: "network"
+      Policy: '[{"Rules":[{"ResourceType":"collection","Resource":["collection/kb-pharm-agent-clin-trials"]},{"ResourceType":"dashboard","Resource":["collection/kb-pharm-agent-clin-trials"]}],"AllowFromPublic":true}]'
+
+  OpenSearchServerlessCollectionPharm:
+      Type: AWS::OpenSearchServerless::Collection
+      Properties:
+        Name: "kb-pharm-agent-clin-trials"
+        Description: "Collection clinical trial data for the pharmaceutical agent"
+        Type: "VECTORSEARCH"
+      DependsOn: 
+        - OpenSearchServerlessEncryptionPolicyPharm
+        - OpenSearchServerlessNetworkPolicyPharm
+        - PharmDataAccessPolicy
+
+  # Lambda function to create the index
+  OpenSearchIndexLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 900
+      Layers:
+        - !Ref OpenSearchLayer
+      Code:
+        ZipFile: |
+          import boto3
+          import time
+          import json
+          import cfnresponse
+          import requests
+          from requests_aws4auth import AWS4Auth
+
+          def handler(event, context):
+              opensearch = boto3.client('opensearchserverless')
+              collection_names = ["kb-pharm-agent-clin-trials", "kb-legal-agent-legal-briefs"]
+              max_retries = 40
+              delay = 30
+              region = boto3.Session().region_name
+              service = 'aoss'
+              credentials = boto3.Session().get_credentials()
+              awsauth = AWS4Auth(
+                  credentials.access_key,
+                  credentials.secret_key,
+                  region,
+                  service,
+                  session_token=credentials.token
+              )
+
+              try:
+                  # Wait for both collections to be in active status
+                  for attempt in range(max_retries):
+                      collections = opensearch.list_collections()
+                      print('Collections:', collections)
+
+                      active_collections = {
+                          c.get('name'): c.get('status') == 'ACTIVE'
+                          for c in collections.get('collectionSummaries', [])
+                      }
+                      all_active = all(active_collections.get(name, False) for name in collection_names)
+
+                      if all_active:
+                          print("All collections are active.")
+                          break
+
+                      print(f"Waiting for collections to be active. Attempt {attempt + 1}/{max_retries}")
+                      time.sleep(delay)
+                  
+                  if not all_active:
+                      print("Not all collections are active after maximum retries.")
+                      cfnresponse.send(event, context, cfnresponse.FAILED, {'Error': "Not all collections are active"})
+                      return
+
+                  # Create vector index for each collection
+                  for collection in collection_names:
+                      try:
+                          # Get collection endpoint
+                          collection_details = opensearch.batch_get_collection(
+                              names=[collection]
+                          )['collectionDetails'][0]
+                          collection_endpoint = collection_details['collectionEndpoint']
+
+                          # Define index mapping
+                          index_body = {
+                              "mappings": {
+                                  "properties": {
+                                      "vector_field": {
+                                          "type": "knn_vector",
+                                          "dimension": 1536,
+                                          "method": {
+                                              "name": "hnsw",
+                                              "space_type": "cosinesimil",
+                                              "engine": "faiss"
+                                          }
+                                      },
+                                      "text": {
+                                          "type": "text"
+                                      },
+                                      "metadata": {
+                                          "type": "keyword"
+                                      }
+                                  }
+                              }
+                          }
+
+                          # Create index using requests
+                          index_url = f"{collection_endpoint}/kb-vector-index"
+                          response = requests.put(
+                              index_url,
+                              auth=awsauth,
+                              json=index_body,
+                              headers={"Content-Type": "application/json"},
+                              verify=True
+                          )
+
+                          if response.status_code in [200, 201]:
+                              print(f"Successfully created index for collection {collection}")
+                          else:
+                              print(f"Failed to create index for collection {collection}: {response.text}")
+                              if response.status_code != 400 or "resource_already_exists_exception" not in response.text:
+                                  raise Exception(f"Failed to create index: {response.text}")
+
+                          # Wait for index to be active
+                          for attempt in range(max_retries):
+                              get_index_response = requests.get(
+                                  index_url,
+                                  auth=awsauth,
+                                  headers={"Content-Type": "application/json"},
+                                  verify=True
+                              )
+                              if get_index_response.status_code == 200:
+                                  print(f"Index {index_url} is confirmed active.")
+                                  break
+                              print(f"Waiting for index {index_url} to be recognized as active. Attempt {attempt + 1}/{max_retries}")
+                              time.sleep(delay)
+
+                      except Exception as e:
+                          print(f"Error processing collection {collection}: {str(e)}")
+                          raise e
+
+                  print("Collections and indexes are active and ready for Bedrock Knowledge Base.")
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {
+                      "message": "Collections and indexes are ready"
+                  })
+
+              except Exception as e:
+                  print(f"Error: {str(e)}")
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {'Error': str(e)})
+
 
   PharmKnowledgeBaseWithAoss:
     Type: AWS::Bedrock::KnowledgeBase
@@ -85,14 +359,16 @@ Resources:
         Type: "OPENSEARCH_SERVERLESS"
         OpensearchServerlessConfiguration:
           CollectionArn: !GetAtt OpenSearchServerlessCollectionPharm.Arn
-          VectorIndexName: "cfn-test-index"
+          VectorIndexName: "kb-vector-index"
           FieldMapping:
-            VectorField: "cfn-test-vector-field"
+            VectorField: "vector_field"
             TextField: "text"
             MetadataField: "metadata"
     DependsOn: 
-      - OpenSearchServerlessEncryptionPolicyPharm
+      - OpenSearchServerlessCollectionPharm
+      - OpenSearchServerlessNetworkPolicyPharm
       - BedrockKnowledgeBaseRole
+      - OpenSearchIndexCreation
 
   PharmDataSource:
     Type: AWS::Bedrock::DataSource
@@ -104,23 +380,38 @@ Resources:
         Type: "S3"
         S3Configuration:
           BucketArn: !Sub arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}
-          #InclusionPrefixes: ["aws-overview.pdf"]
+          InclusionPrefixes:
+            - "clinical_trial_reports/"
 
-  OpenSearchServerlessCollectionLegal:
-    Type: AWS::OpenSearchServerless::Collection
-    Properties:
-      Name: "kb-legal-agent-legal-briefs"
-      Description: "Collection legal briefs data for the legal agent"
-      Type: "SEARCH"
-
+# Legal Collection and Policies
   OpenSearchServerlessEncryptionPolicyLegal:
     Type: AWS::OpenSearchServerless::SecurityPolicy
     Properties:
       Name: "legal-kb-encryption-policy"
       Description: "Encryption policy for Knowledge Base collection"
       Type: "encryption"
-      Policy: >
-        {"Rules":[{"ResourceType":"collection","Resource":["collection/kb-legal-agent-legal-briefs"]}],"AWSOwnedKey":true}
+      Policy: '{"Rules":[{"ResourceType":"collection","Resource":["collection/kb-legal-agent-legal-briefs"]}],"AWSOwnedKey":true}'
+
+  OpenSearchServerlessNetworkPolicyLegal:
+    Type: AWS::OpenSearchServerless::SecurityPolicy
+    Properties:
+      Name: "legal-kb-network-policy"
+      Description: "Network policy for Knowledge Base collection"
+      Type: "network"
+      Policy: '[{"Rules":[{"ResourceType":"collection","Resource":["collection/kb-legal-agent-legal-briefs"]},{"ResourceType":"dashboard","Resource":["collection/kb-legal-agent-legal-briefs"]}],"AllowFromPublic":true}]'
+
+  OpenSearchServerlessCollectionLegal:
+      Type: AWS::OpenSearchServerless::Collection
+      Properties:
+        Name: "kb-legal-agent-legal-briefs"
+        Description: "Collection legal briefs data for the legal agent"
+        Type: "VECTORSEARCH"
+      DependsOn: 
+        - OpenSearchServerlessEncryptionPolicyLegal
+        - OpenSearchServerlessNetworkPolicyLegal
+        - LegalDataAccessPolicy
+
+
 
   LegalKnowledgeBaseWithAoss:
     Type: AWS::Bedrock::KnowledgeBase
@@ -136,14 +427,16 @@ Resources:
         Type: "OPENSEARCH_SERVERLESS"
         OpensearchServerlessConfiguration:
           CollectionArn: !GetAtt OpenSearchServerlessCollectionLegal.Arn
-          VectorIndexName: "cfn-test-index"
+          VectorIndexName: "kb-vector-index"
           FieldMapping:
-            VectorField: "cfn-test-vector-field"
+            VectorField: "vector_field"
             TextField: "text"
             MetadataField: "metadata"
     DependsOn: 
-      - OpenSearchServerlessEncryptionPolicyLegal
+      - OpenSearchServerlessCollectionLegal
+      - OpenSearchServerlessNetworkPolicyLegal
       - BedrockKnowledgeBaseRole
+      - OpenSearchIndexCreation
 
   LegalDataSource:
     Type: AWS::Bedrock::DataSource
@@ -155,4 +448,5 @@ Resources:
         Type: "S3"
         S3Configuration:
           BucketArn: !Sub arn:aws:s3:::unstructured-data-${AWS::AccountId}-${AWS::Region}
-          #InclusionPrefixes: ["aws-overview.pdf"]
+          InclusionPrefixes:
+            - "legal_briefs/"
