@@ -1,0 +1,20 @@
+[
+  {
+    "feedback_id": "F001",
+    "customer_id": "CUST001",
+    "feedback_text": "I love the personalized product suggestions, especially for electronics.",
+    "feedback_date": "2024-11-02"
+  },
+  {
+    "feedback_id": "F002",
+    "customer_id": "CUST002",
+    "feedback_text": "The recommendations for fitness gadgets were spot on. Very satisfied.",
+    "feedback_date": "2024-11-03"
+  },
+  {
+    "feedback_id": "F003",
+    "customer_id": "CUST003",
+    "feedback_text": "Some of the suggested laptops didn’t match my preferences, but the overall experience was good.",
+    "feedback_date": "2024-11-04"
+  }
+]

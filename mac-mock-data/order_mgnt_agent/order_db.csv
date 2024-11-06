@@ -1,0 +1,6 @@
+﻿Order ID,Customer ID,Product ID,Product Name,Order Status,Shipping Status,Return/Exchange Status,Order Date,Delivery Date
+O001,CUST001,P001,Wireless Headphones,Delivered,Delivered,Not Returned,10/25/24 10:00,10/30/24 12:00
+O002,CUST002,P002,Smartwatch,Shipped,In Transit,Not Returned,10/28/24 14:00,11/3/24 16:00
+O003,CUST003,P003,Laptop,Delivered,Delivered,Returned,10/20/24 9:30,10/25/24 18:00
+O004,CUST004,P004,Bluetooth Speaker,Processing,Not Shipped,Not Returned,11/1/24 15:45,N/A
+O005,CUST001,P005,Smartphone,Cancelled,N/A,Not Returned,11/2/24 11:20,N/A

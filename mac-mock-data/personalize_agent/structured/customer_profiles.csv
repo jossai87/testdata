@@ -1,0 +1,6 @@
+﻿Customer ID,Name,Age,Gender,Preferences,Last Interaction,Purchase History,Favorite Categories,Preferred Channel
+CUST001,John Doe,35,Male,Eco-friendly products,11/3/24 9:00,"[""Wireless Headphones"", ""Bluetooth Speaker""]",Electronics,Email
+CUST002,Jane Smith,28,Female,Fitness gadgets,11/2/24 14:00,"[""Smartwatch"", ""Smartphone""]",Wearables,SMS
+CUST003,Bob Brown,40,Male,High-performance tech,10/30/24 16:30,"[""Laptop""]",Computers,Phone Call
+CUST004,Alice Lee,32,Female,Affordable electronics,11/1/24 11:30,"[""Bluetooth Speaker"", ""Smartphone""]",Mobile Phones,Web Chat
+CUST005,Tom Clark,45,Male,Durable gadgets,11/4/24 10:30,"[""Smartwatch"", ""Laptop""]",Electronics,Email

@@ -1,0 +1,6 @@
+﻿Purchase ID,Customer ID,Product ID,Product Name,Category,Purchase Date,Rating
+PH001,CUST001,P001,Wireless Headphones,Electronics,10/15/24 11:00,5
+PH002,CUST002,P002,Smartwatch,Electronics,10/18/24 9:30,4
+PH003,CUST003,P003,Laptop,Computers,10/20/24 14:45,4
+PH004,CUST001,P004,Bluetooth Speaker,Electronics,10/25/24 13:00,3
+PH005,CUST002,P005,Smartphone,Mobile Phones,10/30/24 10:20,5
