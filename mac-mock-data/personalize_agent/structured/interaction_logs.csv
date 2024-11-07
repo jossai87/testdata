@@ -1,6 +1,0 @@
-﻿Interaction ID,Customer ID,Timestamp,Interaction Type,Details,Profile Update
-INT001,CUST001,11/3/24 9:00,Personalized Recommendation,Recommended eco-friendly headphones,"Updated preferences to include ""eco-friendly"""
-INT002,CUST002,11/2/24 14:00,Fitness Gadget Suggestions,Suggested new smartwatch accessories,"Confirmed preference for ""fitness gadgets"""
-INT003,CUST003,10/30/24 16:30,Tech Support,Provided tips for high-performance laptops,"Noted interest in ""high-performance tech"""
-INT004,CUST004,11/1/24 11:30,Product Inquiry,Answered query about smartphone features,"Added preference for ""affordable electronics"""
-INT005,CUST005,11/4/24 10:30,Personalized Follow-Up,Sent follow-up email on durable gadgets,"Reinforced preference for ""durable gadgets"""
