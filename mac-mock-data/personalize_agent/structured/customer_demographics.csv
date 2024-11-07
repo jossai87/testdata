@@ -1,0 +1,7 @@
+﻿customer_id,age,gender,income,location,marital_status
+CUST001,34,Male,"75,000","New York, NY",Single
+CUST002,29,Female,"55,000","Los Angeles, CA",Married
+CUST003,45,Male,"87,000","Chicago, IL",Divorced
+CUST004,38,Female,"62,000","Houston, TX",Married
+CUST005,50,Male,"95,000","Phoenix, AZ",Single
+CUST006,27,Female,"48,000","Philadelphia, PA",Single

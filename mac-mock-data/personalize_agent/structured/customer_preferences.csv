@@ -1,0 +1,7 @@
+﻿customer_id,preferred_category,preferred_price_range,preferred_brand,loyalty_status
+CUST001,Electronics,100-500,Samsung,Gold
+CUST002,Apparel,20-100,Nike,Silver
+CUST003,Home & Kitchen,50-200,Philips,Platinum
+CUST004,Books,Oct-50,Penguin,Gold
+CUST005,Sports Equipment,50-300,Adidas,Silver
+CUST006,Beauty Products,20-150,L'Oréal,Bronze

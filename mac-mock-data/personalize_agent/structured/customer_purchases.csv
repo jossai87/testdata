@@ -1,0 +1,7 @@
+﻿customer_id,product_id,purchase_date,quantity,purchase_amount,payment_method
+CUST001,PROD123,10/15/23,1,450,Credit Card
+CUST002,PROD456,8/20/23,3,75,PayPal
+CUST003,PROD789,9/5/23,2,300,Debit Card
+CUST004,PROD321,7/22/23,5,125,Credit Card
+CUST005,PROD654,11/1/23,1,200,PayPal
+CUST006,PROD987,6/18/23,4,600,Debit Card
