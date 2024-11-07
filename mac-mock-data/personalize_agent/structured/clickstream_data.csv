@@ -1,6 +1,0 @@
-﻿Customer ID,Session ID,Timestamp,Page Visited,Duration (Seconds),Actions Taken
-CUST001,S001,11/3/24 8:45,Home Page,60,Viewed promotional banner
-CUST001,S001,11/3/24 8:50,Product Page - Headphones,120,Added to wishlist
-CUST002,S002,11/2/24 13:45,Product Page - Smartwatch,180,Added to cart
-CUST003,S003,10/30/24 16:00,Product Page - Laptop,300,Purchased
-CUST004,S004,11/1/24 11:00,Home Page,90,Browsed deals section
