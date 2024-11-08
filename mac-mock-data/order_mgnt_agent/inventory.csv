@@ -1,6 +1,7 @@
-﻿Product ID,Product Name,Category,Stock Level,Warehouse Location,Restock Date
-P001,Wireless Headphones,Electronics,50,Warehouse A,11/10/24
-P002,Smartwatch,Electronics,30,Warehouse B,11/15/24
-P003,Laptop,Computers,20,Warehouse A,11/20/24
-P004,Bluetooth Speaker,Electronics,15,Warehouse C,11/12/24
-P005,Smartphone,Mobile Phones,0,Warehouse B,11/18/24
+﻿customer_id,product_id,purchase_date,quantity,purchase_amount,payment_method
+CUST001,P001,10/15/23,1,450,Credit Card
+CUST002,P002,8/20/23,3,75,PayPal
+CUST003,P003,9/5/23,2,300,Debit Card
+CUST004,P004,7/22/23,5,125,Credit Card
+CUST005,P005,11/1/23,1,200,PayPal
+CUST006,P002,6/18/23,4,600,Debit Card
