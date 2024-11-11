@@ -1,0 +1,37 @@
+[
+  {
+    "chat_id": "CH001",
+    "customer_id": "CUST001",
+    "product_id": "P001",
+    "chat_text": "Hi, my headphones won't turn on. I've tried charging them, but nothing happens.",
+    "timestamp": "2024-11-01 09:00:00"
+  },
+  {
+    "chat_id": "CH002",
+    "customer_id": "CUST002",
+    "product_id": "P002",
+    "chat_text": "My smartwatch's screen is unresponsive. I can't access any features.",
+    "timestamp": "2024-11-02 10:00:00"
+  },
+  {
+    "chat_id": "CH003",
+    "customer_id": "CUST003",
+    "product_id": "P003",
+    "chat_text": "The laptop gets extremely hot after 30 minutes of use. Is this normal?",
+    "timestamp": "2024-10-30 16:00:00"
+  },
+  {
+    "chat_id": "CH004",
+    "customer_id": "CUST001",
+    "product_id": "P004",
+    "chat_text": "The sound from my Bluetooth speaker is really muffled. I've tried adjusting the volume.",
+    "timestamp": "2024-11-03 14:30:00"
+  },
+  {
+    "chat_id": "CH005",
+    "customer_id": "CUST004",
+    "product_id": "P005",
+    "chat_text": "My phone isn't charging. I've tried different cables and chargers, but nothing works.",
+    "timestamp": "2024-11-04 10:00:00"
+  }
+]
