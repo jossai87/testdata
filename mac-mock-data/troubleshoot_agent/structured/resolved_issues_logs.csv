@@ -1,0 +1,16 @@
+Log ID,Customer ID,Product ID,Issue Description,Diagnosis,Resolution,Status,Logged At,Resolved At
+SL001,CUST004,P001,Device not turning on - Case variation 1,Power supply issue,Performed power cycle,Resolved,11/1/24 9:00,11/01/24 14:00
+SL002,CUST001,P002,Screen not responding - Case variation 2,Software glitch,Factory reset,Resolved,11/2/24 10:00,11/02/24 11:00
+SL003,CUST003,P003,Overheating during use - Case variation 3,Poor ventilation,Advised ventilation,Pending,10/30/24 16:00,10/30/24 18:00
+SL004,CUST003,P002,Screen not responding - Case variation 4,Software glitch,Factory reset,Resolved,11/2/24 10:00,11/02/24 14:00
+SL005,CUST001,P005,Battery not charging - Case variation 5,Charging port issue,Replaced charger,Resolved,11/4/24 10:00,11/04/24 13:00
+SL006,CUST003,P004,Poor sound quality - Case variation 6,Audio settings issue,Adjusted settings,Resolved,11/3/24 14:30,11/03/24 16:30
+SL007,CUST004,P003,Overheating during use - Case variation 7,Poor ventilation,Advised ventilation,Pending,10/30/24 16:00,10/30/24 18:00
+SL008,CUST004,P005,Battery not charging - Case variation 8,Charging port issue,Replaced charger,Resolved,11/4/24 10:00,11/04/24 12:00
+SL009,CUST003,P004,Poor sound quality - Case variation 9,Audio settings issue,Adjusted settings,Resolved,11/3/24 14:30,11/03/24 16:30
+SL010,CUST005,P004,Poor sound quality - Case variation 10,Audio settings issue,Adjusted settings,Resolved,11/3/24 14:30,11/03/24 15:30
+SL011,CUST002,P004,Poor sound quality - Case variation 11,Audio settings issue,Adjusted settings,Resolved,11/3/24 14:30,11/03/24 19:30
+SL012,CUST003,P001,Device not turning on - Case variation 12,Power supply issue,Performed power cycle,Resolved,11/1/24 9:00,11/01/24 13:00
+SL013,CUST001,P004,Poor sound quality - Case variation 13,Audio settings issue,Adjusted settings,Resolved,11/3/24 14:30,11/03/24 16:30
+SL014,CUST005,P002,Screen not responding - Case variation 14,Software glitch,Factory reset,Resolved,11/2/24 10:00,11/02/24 14:00
+SL015,CUST002,P002,Screen not responding - Case variation 15,Software glitch,Factory reset,Resolved,11/2/24 10:00,11/02/24 12:00
