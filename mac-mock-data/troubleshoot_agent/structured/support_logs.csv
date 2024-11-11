@@ -1,6 +1,0 @@
-﻿Log ID,Customer ID,Product ID,Issue Description,Diagnosis,Resolution,Status,Logged At,Resolved At
-SL001,CUST001,P001,Device not turning on,Power supply issue,Performed power cycle,Resolved,11/1/24 9:00,11/1/24 11:00
-SL002,CUST002,P002,Screen not responding,Software glitch,Factory reset,Resolved,11/2/24 10:00,11/2/24 13:00
-SL003,CUST003,P003,Overheating during use,Poor ventilation,Advised ventilation,Pending,10/30/24 16:00,N/A
-SL004,CUST001,P004,Poor sound quality,Audio settings issue,Adjusted settings,Resolved,11/3/24 14:30,11/3/24 16:00
-SL005,CUST004,P005,Battery not charging,Charging port issue,Replaced charger,Resolved,11/4/24 10:00,11/4/24 12:30
