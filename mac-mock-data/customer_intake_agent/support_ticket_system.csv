@@ -1,6 +1,0 @@
-﻿Ticket ID,Customer ID,Inquiry Type,Issue Description,Status,Resolution,Created At,Resolved At
-T001,CUST001,Order Tracking,Order not delivered,Resolved,Provided tracking,11/1/24 10:00,11/2/24 12:00
-T002,CUST002,Return/Exchange,Defective product received,Resolved,Processed return,11/2/24 9:30,11/3/24 11:00
-T003,CUST003,Product Inquiry,Need details about a product,Open,N/A,11/3/24 14:15,N/A
-T004,CUST001,Troubleshooting,Device not turning on,Resolved,Power cycle step,11/1/24 15:45,11/2/24 10:30
-T005,CUST004,Complaint,Delay in refund processing,Pending,N/A,11/4/24 9:20,N/A

@@ -1,6 +1,0 @@
-﻿Interaction ID,Customer ID,Timestamp,Inquiry Type,Details,Assigned Agent,Resolution Status
-INT001,CUST001,11/1/24 9:00,Order Tracking,Inquired about order status,Order Management Agent,Resolved
-INT002,CUST002,11/2/24 9:20,Return/Exchange,Request to return product,Order Management Agent,Resolved
-INT003,CUST003,11/3/24 14:00,Product Inquiry,Asked about product specs,Product Recommendation,Open
-INT004,CUST001,11/1/24 15:30,Troubleshooting,Device not powering on,Troubleshooting Agent,Resolved
-INT005,CUST004,11/4/24 9:00,Complaint,Complaint about refund delay,Customer Service Agent,Pending
