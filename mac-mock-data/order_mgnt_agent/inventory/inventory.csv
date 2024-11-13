@@ -1,0 +1,15 @@
+﻿product_id,product_name,category,quantity,overstocked,reorder_threshold,reorder_quantity,last_restock_date
+p001,ZenSound Wireless Headphones,headphones,150,No,50,100,10/01/24
+p002,VitaFit Smartwatch,watch,75,No,30,50,10/05/24
+p004,SonicWave Bluetooth Speaker,speaker,200,Yes,70,100,09/25/24
+p006,SoundSphere Pro Headphones,headphones,180,Yes,60,100,09/20/24
+p007,TrackMaster Smartwatch,watch,40,No,25,50,10/03/24
+p008,ThunderBolt Speaker,speaker,300,Yes,100,150,09/15/24
+p003,ProMax Laptop,computer,20,No,10,30,10/02/24
+p009,UltraBook Pro Laptop,computer,15,No,8,20,10/06/24
+p010,GigaBook Gaming Laptop,computer,10,No,5,15,09/29/24
+p011,FlexTab Convertible Laptop,computer,25,No,10,20,10/04/24
+p005,Nova 5G Smartphone,phone,50,No,20,30,10/08/24
+p012,Alpha One 5G,phone,30,No,15,25,10/10/24
+p013,Eclipse X Smartphone,phone,60,Yes,25,40,10/03/24
+p014,Infinity Ultra 5G,phone,45,No,20,30,09/28/24
