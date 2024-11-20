@@ -1,6 +1,6 @@
 ﻿product_id,product_name,category,price,description,rating,popularity
 p001,zensound wireless headphones,headphones,150,"noise-canceling, bluetooth enabled",4.5,high
-p002,vitafit smartwatch,watch,250,"fitness tracking, waterproof",4.6,medium
+p002,vitafit smartwatch,watch,250,"fitness tracking, waterproof",4.6,high
 p004,sonicwave bluetooth speaker,speaker,100,"portable, long battery life",4.2,medium
 p006,soundsphere pro headphones,headphones,130,"immersive sound, over-ear, noise-canceling",4.4,medium
 p007,trackmaster smartwatch,watch,230,"heart rate monitor, gps tracking",4.3,medium
