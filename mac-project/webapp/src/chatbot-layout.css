@@ -1,0 +1,103 @@
+/* Container styles for the ID fields and navigation */
+.left-panel {
+    width: 300px; /* Increased width for better usability */
+    padding: 20px;
+    border-right: 3px solid #e0e0e0;
+    height: 100%; /* Full height for consistent layout */
+    position: fixed;
+    background: #fafafa;
+    overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+/* Connection Settings Section */
+.id-fields-container {
+    margin-bottom: 50px;
+    padding: 20px; /* Increased padding for cleaner spacing */
+    background: white;
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    height: auto; /* Automatically adjusts to content height */
+}
+
+.id-fields-container h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px; /* Increased font size for readability */
+    color: #2e445c;
+    font-weight: 500;
+}
+
+/* Main content area */
+.main-content {
+    margin-left: 300px; /* Matches the left panel width */
+    padding: 24px;
+    flex: 1;
+    max-width: calc(100% - 300px); /* Ensures proper width calculation */
+}
+
+/* Sample Questions Section */
+.navigation-container {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Adds spacing from the Connection Settings */
+}
+
+/* AWS Side Navigation Styles */
+:global(.awsui-side-navigation) {
+    width: 100%;
+}
+
+:global(.awsui-side-navigation-section-header) {
+    font-size: 14px;
+    color: #2e445c;
+    font-weight: 500;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+}
+
+:global(.awsui-side-navigation-item-link) {
+    width: 100%;
+    display: block;
+    padding: 8px 12px;
+    margin: 2px 0;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #545b64;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+:global(.awsui-side-navigation-item-link:hover) {
+    background-color: #f2f3f3;
+    color: #0972d3;
+}
+
+/* Button and Indicator Styling */
+.button-container {
+    margin-top: 16px; /* Adds space above the button */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-indicator {
+    margin-top: 10px;
+    font-size: 12px; /* Smaller text for indicators */
+    color: #28a745; /* Green for success */
+}
+
+/* Select Dropdown Styling */
+.select-container {
+    margin-top: 10px; /* Adds spacing above the dropdown */
+}
+
+:global(.awsui-select-trigger) {
+    border-radius: 4px; /* Rounded corners for the dropdown */
+    border: 1px solid #ddd; /* Subtle border for clarity */
+    padding: 8px; /* Increased padding for a better click area */
+}
+
+:global(.awsui-select-option:hover) {
+    background-color: #f2f3f3; /* Highlighted background for hover */
+}

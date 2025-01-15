@@ -1,0 +1,26 @@
+/* Dynamic component styles */
+
+/* Make IDFields container more dynamic in length */
+.id-fields-container {
+    flex: 1;
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Make PageNavigation more dynamic in width */
+.aws-side-navigation {
+    min-width: 200px;
+    max-width: 300px;
+    width: auto;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+}
+
+/* Ensure side navigation container can expand/contract */
+nav[class*="side-navigation"] {
+    width: 100%;
+    height: 100%;
+}
