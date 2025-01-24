@@ -1,0 +1,58 @@
+
+Patent Title: Sustained-Release Cardiovascular Drug Delivery System
+
+Patent ID: PAT002
+
+Filing Date: November 22, 2020
+Approval Date: September 30, 2022
+Expiration Date: September 30, 2042
+Estimated Value: $100,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention relates to a sustained-release drug delivery system designed specifically for cardiovascular treatments. Cardiovascular diseases, including hypertension, heart disease, and hypercholesterolemia, affect millions worldwide and require ongoing treatment for effective management. One of the major challenges in managing these conditions is ensuring patient adherence to medication regimens, as frequent dosing and side effects can lead to poor compliance.
+
+Sustained-release delivery systems have emerged as a promising solution to these challenges by allowing the active drug to be released gradually over an extended period. However, current sustained-release systems face limitations, such as uneven drug release rates and inadequate bioavailability, particularly for drugs targeting cardiovascular conditions that need precise and controlled plasma levels.
+
+This invention addresses these limitations by presenting an advanced sustained-release cardiovascular drug delivery system. The system is formulated to provide controlled, steady-state plasma concentrations of the therapeutic agent, ensuring consistent efficacy while reducing dosing frequency. This innovative formulation minimizes peaks and troughs in blood concentration, enhancing both safety and adherence in cardiovascular disease management.
+
+Summary of the Invention
+
+The invention provides a sustained-release cardiovascular drug delivery system that combines an extended-release matrix with a lipid-based microencapsulation technique to achieve a controlled drug release profile over 24 hours. By encapsulating the drug within lipid microcapsules, the formulation minimizes exposure to degradation in the stomach and allows for targeted release in the intestine, optimizing absorption.
+
+The primary goal of this invention is to enhance the bioavailability of the active drug and extend its effective duration of action. The system is designed for once-daily dosing, significantly improving patient convenience and compliance. Additionally, the lipid microencapsulation technique serves as a protective barrier, preventing rapid release in acidic environments and ensuring that the active compound reaches its target absorption site in the intestine.
+
+Detailed Description of the Invention
+
+The sustained-release system employs a dual-layer tablet structure, with an initial burst-release layer to deliver a rapid dose of the active compound, followed by an extended-release matrix that gradually releases the drug. The burst-release layer is composed of fast-dissolving excipients, allowing an immediate dose to be absorbed, which achieves a quick onset of action, particularly beneficial in acute cardiovascular situations.
+
+The extended-release layer comprises a matrix system based on hydroxypropyl methylcellulose (HPMC) and polyvinyl alcohol (PVA), creating a hydrophilic barrier that modulates the release rate. The active drug is embedded within a lipid-based microencapsulation matrix using biodegradable lipids such as lecithin and stearic acid, which provide both protection and controlled release properties.
+
+Upon ingestion, the lipid microcapsules in the extended-release layer delay the drug’s release in the acidic stomach environment, allowing it to pass into the intestine intact. Once in the intestine, the lipid matrix gradually degrades, releasing the drug at a controlled rate through a combination of diffusion and erosion mechanisms.
+
+In addition to the controlled-release technology, the invention includes stabilizing agents such as antioxidants and magnesium stearate, which improve tablet flow and consistency during manufacturing. The invention also covers methods for producing the delivery system, which involve microencapsulation, blending, compression, and film coating.
+
+Experimental Data and Clinical Studies
+
+Clinical trials have demonstrated the efficacy and safety of this sustained-release system in patients with cardiovascular conditions requiring constant therapeutic levels. In a randomized, controlled study, patients receiving the sustained-release formulation showed improved blood pressure and lipid profile control compared to those on conventional formulations. The study also reported a 25% increase in patient compliance, attributed to the once-daily dosing regimen.
+
+Pharmacokinetic data revealed that the system maintained therapeutic plasma concentrations for up to 24 hours with reduced variability in peak and trough levels. This formulation also showed a 20% reduction in common side effects such as dizziness and fatigue, linked to the stable release rate and reduced need for high single doses.
+
+Claims
+
+Claim 1: A pharmaceutical composition comprising a sustained-release delivery system for cardiovascular drugs, characterized by a dual-layer structure with a burst-release layer and an extended-release matrix.
+
+Claim 2: The system according to Claim 1, wherein the extended-release matrix contains a hydrophilic polymer selected from hydroxypropyl methylcellulose and polyvinyl alcohol.
+
+Claim 3: The system according to Claim 1, further comprising lipid-based microcapsules formed from biodegradable lipids, allowing targeted release in the intestinal tract.
+
+Claim 4: The method of treating cardiovascular diseases by administering the sustained-release delivery system once daily to maintain effective plasma drug levels and enhance patient compliance.
+
+Claim 5: The process of manufacturing a sustained-release cardiovascular drug delivery system, involving microencapsulation, compression, and film coating steps to ensure stability and bioavailability.
+
+Conclusion
+
+The sustained-release cardiovascular drug delivery system described in this patent application provides an advanced solution for the management of cardiovascular diseases. By ensuring a controlled, consistent release of the active drug, this invention enhances efficacy, improves patient adherence, and minimizes side effects, making it a valuable advancement in cardiovascular treatment. The innovation holds promise for reducing the burden of frequent dosing in chronic disease management and ensuring that therapeutic outcomes are achieved effectively and conveniently.
+

@@ -1,0 +1,59 @@
+
+Patent Title: Novel ACE Inhibitor Formulation for Extended Hypertension Management
+
+Patent ID: PAT001
+
+Filing Date: May 10, 2020
+Approval Date: March 15, 2021
+Expiration Date: March 15, 2041
+Estimated Value: $150,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention relates to a novel formulation of ACE (angiotensin-converting enzyme) inhibitors intended for the treatment and management of hypertension. Hypertension, commonly known as high blood pressure, is a significant risk factor for cardiovascular diseases, including heart failure, stroke, and myocardial infarction. It affects millions of individuals globally and requires long-term management to reduce morbidity and mortality.
+
+ACE inhibitors are a widely used class of antihypertensive medications. By inhibiting the conversion of angiotensin I to angiotensin II, these drugs reduce vasoconstriction and decrease blood pressure. However, standard ACE inhibitors present limitations in pharmacokinetic profiles that require frequent dosing to maintain therapeutic levels, leading to potential issues with patient compliance. Furthermore, the rapid degradation of active compounds in conventional formulations reduces the effective duration of each dose, increasing the need for innovative delivery mechanisms.
+
+This invention addresses these limitations by presenting a novel ACE inhibitor formulation that optimizes drug release rates and bioavailability, providing a more sustained therapeutic effect. This advanced formulation promises to enhance the effectiveness of ACE inhibitors by improving absorption, extending the duration of action, and reducing the required dosage frequency. As such, it stands to significantly improve patient adherence to hypertension management regimens.
+
+Summary of the Invention
+
+The invention comprises a unique ACE inhibitor formulation that leverages controlled-release technology. By employing a combination of sustained-release matrices and biodegradable excipients, the formulation ensures a gradual and steady release of the active compound over a 24-hour period. This technology not only improves the pharmacokinetic profile of ACE inhibitors but also offers a targeted release in the gastrointestinal tract, optimizing drug absorption while minimizing potential side effects.
+
+The primary objective of this invention is to develop a formulation that maintains effective plasma concentration levels with a single daily dose. This once-daily dosing regimen has been shown to sustain therapeutic efficacy, reduce blood pressure fluctuations, and minimize troughs that typically occur with multiple-dose regimens. Additionally, the formulation is designed to be stable under various storage conditions, making it suitable for widespread distribution without degradation.
+
+Detailed Description of the Invention
+
+The novel ACE inhibitor formulation described in this invention utilizes a multi-layered tablet structure composed of both immediate-release and extended-release layers. The immediate-release layer delivers an initial therapeutic dose upon administration, ensuring a rapid onset of action to provide quick relief from elevated blood pressure. The extended-release layer then maintains plasma drug levels over an extended period, achieving a controlled, predictable release.
+
+The extended-release layer comprises a hydrophilic polymer matrix, which is formulated from cellulose derivatives such as hydroxypropyl methylcellulose (HPMC) combined with ethylcellulose. These compounds create a matrix that swells upon contact with gastrointestinal fluids, gradually releasing the ACE inhibitor as the matrix erodes. This approach leverages the principles of diffusion and erosion to achieve a steady drug release rate over a prolonged period.
+
+In addition to the polymer matrix, the formulation includes biodegradable excipients such as polylactic acid (PLA) and polycaprolactone (PCL) that further control the release rate and enhance the drug’s stability in the gastrointestinal environment. The inclusion of excipients that delay release until the formulation reaches specific sections of the intestine aids in reducing gastrointestinal irritation, a common side effect associated with ACE inhibitors. Magnesium stearate is also added to improve tablet flow during manufacturing and ensure consistent production quality.
+
+The formulation’s immediate-release component consists of a micronized form of the ACE inhibitor compound, ensuring rapid dissolution and absorption. This component is optimized to reach peak plasma concentration within one hour of ingestion, achieving the desired antihypertensive effect within a clinically relevant timeframe.
+
+The invention also covers the manufacturing process of this novel formulation, which includes steps such as granulation, blending, compression, and coating to ensure uniform distribution of active ingredients and excipients throughout the tablet. A special coating layer is applied to the tablet to protect the active compounds from moisture, thereby extending shelf life and maintaining potency during storage.
+
+Experimental Data and Clinical Studies
+
+In clinical studies, this formulation was tested on a population of individuals diagnosed with stage 1 and stage 2 hypertension. The studies compared the novel formulation to a standard ACE inhibitor with immediate-release properties, measuring the efficacy in maintaining controlled blood pressure levels over a 24-hour period.
+
+The test group, who received the once-daily controlled-release formulation, demonstrated stable blood pressure control with fewer fluctuations compared to the group using standard ACE inhibitors. Results indicated a 30% improvement in patient adherence due to the reduced dosing frequency. Additionally, the incidence of common ACE inhibitor side effects such as cough and dizziness was reduced by approximately 15%, attributed to the controlled-release profile that lowers peak plasma concentrations and minimizes exposure to active metabolites.
+
+Claims
+
+Claim 1: A pharmaceutical composition comprising a controlled-release formulation of an ACE inhibitor for the treatment of hypertension, characterized by an immediate-release layer for rapid onset and an extended-release matrix that sustains drug levels over a 24-hour period.
+
+Claim 2: The formulation according to Claim 1, wherein the extended-release matrix comprises a hydrophilic polymer selected from hydroxypropyl methylcellulose and ethylcellulose.
+
+Claim 3: The formulation according to Claim 1, further comprising biodegradable excipients selected from polylactic acid and polycaprolactone to enhance stability and gastrointestinal tolerance.
+
+Claim 4: The method of treating hypertension by administering the controlled-release ACE inhibitor formulation once daily to maintain effective plasma drug concentration and improve patient compliance.
+
+Claim 5: The manufacturing process for producing a controlled-release ACE inhibitor tablet, involving granulation, blending, compression, and coating steps to ensure consistent quality and drug stability.
+
+Conclusion
+
+The invention outlined in this patent application presents a breakthrough in hypertension management through a novel ACE inhibitor formulation. By addressing the limitations of conventional formulations, this controlled-release drug not only enhances therapeutic efficacy but also offers substantial improvements in patient compliance and safety. The innovation holds significant potential for improving hypertension treatment outcomes, providing patients and healthcare providers with a reliable and convenient therapeutic option.

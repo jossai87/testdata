@@ -1,0 +1,60 @@
+
+Patent Title: Long-Acting Insulin Analogue for Extended Glycemic Control
+
+Patent ID: PAT007
+
+Filing Date: March 20, 2023
+Approval Date: January 30, 2024
+Expiration Date: January 30, 2044
+Estimated Value: $250,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention pertains to a long-acting insulin analogue designed for the management of diabetes mellitus, particularly for patients requiring consistent blood glucose control. Diabetes, a chronic metabolic disorder, is primarily managed through insulin therapy for individuals with Type 1 diabetes and insulin-dependent Type 2 diabetes. Conventional insulin formulations often require multiple daily injections to maintain stable glycemic levels, which can be cumbersome and impact patient adherence.
+
+Current long-acting insulin options exist, but they often lack the ability to maintain consistent blood glucose levels throughout a full 24-hour period, leading to periods of hypo- or hyperglycemia. This invention addresses the need for a more stable, once-daily insulin analogue that can maintain blood glucose levels over an extended period, reducing the frequency of injections and improving patient compliance.
+
+This long-acting insulin analogue offers improved pharmacokinetics, allowing for a slow, steady release of insulin into the bloodstream. The modified structure minimizes degradation, ensuring a prolonged duration of action that provides stable glycemic control for up to 24 hours or more.
+
+Summary of the Invention
+
+The invention is a long-acting insulin analogue designed to mimic natural insulin activity with an extended half-life, allowing for once-daily dosing. The analogue incorporates structural modifications, such as fatty acid acylation and amino acid substitutions, which delay absorption and prolong activity by enhancing albumin binding. This binding prolongs the analogue’s residence time in the bloodstream, ensuring a slow and continuous release.
+
+The analogue’s molecular modifications include attaching a fatty acid chain to the insulin molecule, which increases its hydrophobicity and encourages binding to serum albumin. This interaction with albumin slows down degradation and delays the release of active insulin, providing a stable release profile. The analogue is formulated as an injectable solution, offering ease of administration while achieving consistent glycemic control.
+
+Detailed Description of the Invention
+
+The long-acting insulin analogue described in this invention features a modified molecular structure designed to achieve extended blood glucose control. The analogue comprises an insulin molecule with a fatty acid chain, such as a myristic or palmitic acid, attached via a linker. This modification allows the insulin analogue to reversibly bind to serum albumin, creating a depot effect that extends the drug’s half-life.
+
+The invention uses site-directed mutagenesis to replace specific amino acids, improving the molecule’s stability and reducing its enzymatic degradation. These modifications do not alter the analogue’s affinity for the insulin receptor, ensuring that it retains full biological activity while delaying absorption.
+
+The formulation includes a stabilizing buffer solution, typically a phosphate buffer, to maintain the insulin analogue’s structure and activity. The analogue is delivered as a subcutaneous injection, where it forms a slow-releasing depot in subcutaneous tissues. Upon injection, the insulin analogue gradually dissociates from albumin, releasing active insulin over a period exceeding 24 hours.
+
+This invention also covers the manufacturing process, which involves recombinant DNA technology for the expression of the modified insulin analogue. The process ensures consistent quality, stability, and potency, enabling large-scale production for clinical use.
+
+Experimental Data and Clinical Studies
+
+Clinical trials have demonstrated the effectiveness and safety of this long-acting insulin analogue in managing blood glucose levels over 24 hours. In a randomized study involving 600 diabetic patients, those treated with the analogue achieved a 30% reduction in HbA1c levels compared to patients on standard insulin formulations. The long-acting analogue maintained steady plasma insulin levels with a single daily injection, reducing glucose fluctuations and lowering the incidence of nocturnal hypoglycemia.
+
+Pharmacokinetic studies showed that the insulin analogue achieved peak plasma concentrations within 12 hours and maintained therapeutic levels beyond 24 hours. Patient-reported outcomes indicated a high level of satisfaction with the once-daily regimen, citing improved quality of life and reduced injection frequency as key benefits.
+
+Claims
+
+Claim 1: A long-acting insulin analogue comprising a modified insulin molecule with fatty acid acylation to promote extended binding to serum albumin, allowing prolonged glycemic control.
+
+Claim 2: The insulin analogue according to Claim 1, formulated as an injectable solution that forms a slow-release depot upon subcutaneous administration.
+
+Claim 3: The insulin analogue according to Claim 1, wherein the amino acid substitutions enhance stability without altering insulin receptor affinity.
+
+Claim 4: The method of managing diabetes by administering the long-acting insulin analogue once daily to maintain steady plasma insulin levels and improve glycemic control.
+
+Claim 5: The process for manufacturing a long-acting insulin analogue, including recombinant DNA technology and acylation, to produce a stable, extended-release formulation.
+
+Conclusion
+
+The long-acting insulin analogue presented in this patent offers a transformative solution for diabetes management by providing stable, once-daily glycemic control. By extending insulin’s half-life and promoting steady release, this invention addresses the challenges of conventional insulin therapy, improving patient adherence and quality of life. This innovation holds significant potential for enhancing therapeutic outcomes in diabetes care, aligning with the growing need for reliable, long-acting insuli...
+
+---
+

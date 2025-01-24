@@ -1,0 +1,10 @@
+Case Title: Robert Green vs. PharmaCorp Case Number: 2022-CV-013
+Date Filed: December 1, 2022 Court: Superior Court of Georgia Plaintiff: Robert Green Defendant: PharmaCorp
+Procedural History: The trial court found probable cause to proceed with the lawsuit. The district court upheld this decision, and the case is currently pending.
+Issue: The primary legal issue is whether PharmaCorp’s product, CholesterEx, caused muscle pain and whether PharmaCorp failed to provide adequate warnings.
+Holding: The court found sufficient evidence to support the claim that the product caused muscle pain and that PharmaCorp failed to provide adequate warnings.
+Rule: To establish a cause of action for failure to warn, the plaintiff must show that PharmaCorp knew or should have known about the risk of muscle pain and failed to provide adequate warnings.
+Facts: The plaintiff, Robert Green, experienced muscle pain after using the product. Medical records documented the onset of pain shortly after starting CholesterEx, with expert testimonies indicating a likely link. Internal documents revealed PharmaCorp’s awareness of this risk, which was omitted from product warnings.
+Reasoning: The court’s decision was based on medical records, expert testimonies, and internal PharmaCorp documents, demonstrating a strong link between the product and muscle pain. This omission was seen as a significant breach of PharmaCorp’s duty to consumers.
+Analysis: The court focused on PharmaCorp's duty to warn consumers of known risks. Withholding warnings about muscle pain, despite internal awareness, constituted a breach of this duty. This omission was a substantial factor in the plaintiff’s injuries, meeting the requirement for probable cause.
+Conclusion: The case was settled out of court, with PharmaCorp agreeing to pay $550,000 to the plaintiff and update product warnings to include muscle pain.

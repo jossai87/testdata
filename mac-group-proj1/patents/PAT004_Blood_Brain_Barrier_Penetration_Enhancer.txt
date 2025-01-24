@@ -1,0 +1,57 @@
+
+Patent Title: Blood-Brain Barrier Penetration Enhancer for Neurological Drug Delivery
+
+Patent ID: PAT004
+
+Filing Date: February 28, 2022
+Approval Date: December 10, 2023
+Expiration Date: December 10, 2043
+Estimated Value: $180,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention relates to an enhancer system for improving the penetration of neurological drugs across the blood-brain barrier (BBB). The BBB is a highly selective membrane that protects the brain from potential toxins but also restricts the passage of many therapeutic agents. This barrier is a significant challenge in developing treatments for central nervous system (CNS) disorders, such as Alzheimer's Disease, Parkinson's Disease, and other neurodegenerative conditions. Current neurological dr...
+
+Existing methods to overcome BBB limitations often involve high systemic dosing or chemical modifications, which can lead to undesirable side effects and off-target effects throughout the body. A targeted approach that specifically enhances drug delivery across the BBB without impacting other physiological barriers remains an unmet need in neurological therapeutics.
+
+This invention introduces a novel BBB penetration enhancer that selectively increases the permeability of therapeutic compounds intended for CNS treatment. By optimizing BBB penetration without affecting other tissue barriers, this enhancer maximizes drug efficacy while minimizing off-target effects and systemic exposure.
+
+Summary of the Invention
+
+The invention comprises a BBB penetration enhancer system for neurological drugs, designed to facilitate targeted delivery of therapeutic agents to the brain. The system employs a dual-ligand approach, combining a targeting ligand with a penetration enhancer molecule, allowing the drug to bind specifically to receptors on the endothelial cells of the BBB. This binding initiates transcytosis, a process that actively transports the drug across the BBB.
+
+The enhancer utilizes nano-encapsulation, wherein the active drug is encapsulated within lipid-based nanoparticles. These nanoparticles are coated with ligands that recognize receptors exclusive to the BBB, enabling precise delivery of the drug to brain tissues. This technique reduces the amount of drug required to achieve therapeutic concentrations in the CNS, thereby reducing potential systemic side effects.
+
+The enhanced BBB penetration allows for lower overall doses, as the drug reaches higher concentrations within brain tissues, improving efficacy and reducing off-target effects. The invention is formulated for both intravenous and oral administration, depending on the drug’s pharmacokinetics.
+
+Detailed Description of the Invention
+
+This BBB penetration enhancer is based on a lipid nanoparticle system designed to encapsulate neurological drugs and transport them across the BBB. The lipid nanoparticles are composed of biodegradable lipids, including lecithin and phosphatidylcholine, which stabilize the nanoparticles in the bloodstream and prevent premature degradation. Each nanoparticle is surface-functionalized with two types of ligands: one ligand targets BBB-specific receptors, while the other enhances membrane permeability.
+
+Upon administration, the nanoparticles circulate in the bloodstream and selectively bind to receptors expressed on the BBB’s endothelial cells. This targeted binding initiates receptor-mediated transcytosis, enabling the nanoparticle to cross the BBB and release the encapsulated drug into brain tissues. This process is achieved without disrupting other barriers or causing excessive accumulation in non-CNS tissues.
+
+The invention includes stabilizing agents within the nanoparticles, such as polyethylene glycol (PEG), to extend the circulation time and improve biodistribution. The system’s unique dual-ligand approach ensures that only therapeutic compounds targeting CNS conditions benefit from enhanced BBB penetration, reducing the potential for off-target effects.
+
+This invention also encompasses the methods for producing the BBB enhancer system, including nanoparticle formulation, ligand conjugation, and encapsulation techniques. The production process ensures consistent particle size, stability, and ligand density for optimal interaction with BBB receptors.
+
+Experimental Data and Clinical Studies
+
+Clinical studies have shown that neurological drugs administered with this BBB enhancer system achieved a 50% increase in brain tissue concentration compared to drugs without the enhancer. In a 6-month clinical trial with 200 patients, the formulation demonstrated a significant reduction in disease progression markers for Alzheimer's Disease compared to standard drug formulations. Cognitive function scores improved by an average of 30% in patients treated with the enhanced delivery system.
+
+Pharmacokinetic studies revealed that the enhancer system maintained therapeutic drug levels in the brain with minimal fluctuation, allowing for lower systemic doses. Side effect profiles were notably improved, with patients experiencing fewer adverse effects commonly associated with neurological drugs, such as nausea and dizziness, due to the reduced systemic exposure.
+
+Claims
+
+Claim 1: A pharmaceutical composition comprising a blood-brain barrier penetration enhancer, characterized by a dual-ligand nanoparticle system that selectively targets and transports neurological drugs across the blood-brain barrier.
+
+Claim 2: The composition according to Claim 1, wherein the nanoparticles are composed of biodegradable lipids and surface-functionalized with ligands that bind to blood-brain barrier receptors.
+
+Claim 3: The method of treating central nervous system disorders by administering a neurological drug in conjunction with a BBB penetration enhancer to increase targeted delivery to brain tissues.
+
+Claim 4: The process of producing a BBB penetration enhancer system, involving nanoparticle formulation, ligand conjugation, and encapsulation techniques to ensure stability and targeted delivery.
+
+Conclusion
+
+The BBB penetration enhancer described in this patent application offers a breakthrough in neurological drug delivery by overcoming the challenges posed by the blood-brain barrier. By selectively enhancing BBB penetration, this invention maximizes the therapeutic potential of neurological drugs, improves safety profiles, and minimizes off-target effects. The innovative use of dual-ligand nanoparticles for targeted transcytosis introduces a new paradigm in CNS treatment, aligning with the urgent need for...

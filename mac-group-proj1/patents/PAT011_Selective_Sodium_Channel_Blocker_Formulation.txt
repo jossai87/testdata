@@ -1,0 +1,56 @@
+
+Patent Title: Selective Sodium Channel Blocker Formulation for Chronic Pain Management
+
+Patent ID: PAT011
+
+Filing Date: January 15, 2024
+Approval Date: November 20, 2024
+Expiration Date: November 20, 2044
+Estimated Value: $80,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention relates to a selective sodium channel blocker designed for the management of chronic pain. Chronic pain, a condition affecting millions worldwide, is often treated with sodium channel blockers that reduce nerve signal transmission. However, conventional sodium channel blockers lack specificity, affecting multiple sodium channels throughout the nervous system. This non-selective inhibition can lead to significant side effects, including drowsiness, motor impairment, and, in some cases, ...
+ 
+This invention addresses the need for a targeted sodium channel blocker that selectively inhibits channels involved in pain signaling without affecting others necessary for normal function. This selectivity reduces adverse effects and improves patient adherence, making it a valuable alternative for individuals experiencing chronic pain.
+
+Summary of the Invention
+
+The invention is a selective sodium channel blocker specifically formulated to target Nav1.7 sodium channels, which are primarily involved in pain signal transmission. By selectively binding to Nav1.7 channels, the compound inhibits the transmission of pain signals while sparing other sodium channels essential for normal nerve function. This selective action provides effective pain relief with minimal side effects, making it particularly useful for long-term management of chronic pain.
+
+The compound is formulated as a controlled-release oral tablet, designed to maintain stable blood concentrations over a 24-hour period. This controlled-release formulation ensures consistent pain relief without the need for frequent dosing, further enhancing patient compliance.
+
+Detailed Description of the Invention
+
+The selective sodium channel blocker described in this invention is a compound engineered to bind specifically to Nav1.7 channels located on pain-sensing neurons, or nociceptors. The compound’s molecular structure includes a hydrophobic tail that enhances binding affinity to the Nav1.7 channel’s active site, while a charged moiety prevents it from interacting with other sodium channels. This design enables selective inhibition of pain-associated channels without disrupting sodium channels critical for muscl...
+ 
+The formulation includes a controlled-release matrix composed of hydroxypropyl methylcellulose (HPMC) and ethylcellulose, which allow for gradual release of the compound over a 24-hour period. This sustained-release mechanism maintains therapeutic blood levels, providing steady pain relief while minimizing peaks and troughs in drug concentration.
+
+The invention also includes stabilizing agents, such as magnesium stearate, to improve tablet flow and consistency during manufacturing. The compound’s solubility and bioavailability are enhanced through micronization, which increases surface area and absorption in the gastrointestinal tract.
+
+This invention encompasses the methods for synthesizing the selective sodium channel blocker, including steps for organic synthesis, purification, and formulation into a controlled-release tablet.
+
+Experimental Data and Clinical Studies
+
+In clinical trials, this selective sodium channel blocker demonstrated significant efficacy in reducing pain scores among patients with chronic pain conditions. In a double-blind study with 300 participants, patients receiving the selective blocker reported a 40% reduction in pain intensity compared to a placebo, with fewer side effects than traditional sodium channel blockers.
+
+Pharmacokinetic studies showed that the controlled-release formulation maintained steady plasma levels over a 24-hour period, supporting once-daily dosing. Adverse effects were minimal, with no significant reports of drowsiness or motor impairment, underscoring the safety profile of this selective formulation.
+
+Claims
+
+Claim 1: A selective sodium channel blocker comprising a compound that specifically targets Nav1.7 sodium channels, designed to inhibit pain signal transmission without affecting other sodium channels.
+
+Claim 2: The sodium channel blocker according to Claim 1, formulated as a controlled-release tablet for extended pain relief over a 24-hour period.
+
+Claim 3: The method of managing chronic pain by administering a selective sodium channel blocker to inhibit Nav1.7 channels, reducing pain signal transmission with minimal side effects.
+
+Claim 4: The process for manufacturing a selective sodium channel blocker, involving organic synthesis, micronization, and controlled-release tablet formulation for consistent therapeutic effect.
+
+Conclusion
+
+This selective sodium channel blocker represents an innovative approach to chronic pain management by offering targeted inhibition of pain-associated sodium channels. By focusing on Nav1.7 channels, the invention provides effective pain relief with reduced adverse effects, improving quality of life for patients requiring long-term pain management. This breakthrough offers a safer, more effective alternative to traditional sodium channel blockers, advancing the field of pain management.
+
+---
+

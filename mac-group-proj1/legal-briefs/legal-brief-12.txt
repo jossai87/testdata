@@ -1,0 +1,10 @@
+Case Title: James White vs. PharmaCorp Case Number: 2023-CV-012
+Date Filed: September 14, 2023 Court: Superior Court of Nevada Plaintiff: James White Defendant: PharmaCorp
+Procedural History: The trial court found probable cause to proceed with the lawsuit. The district court upheld this decision, and the case is currently pending.
+Issue: The primary legal issue is whether PharmaCorp failed to warn about the risk of ketoacidosis associated with their product, DiabetAid.
+Holding: The court found sufficient evidence to support the claim that the product caused ketoacidosis and that PharmaCorp failed to provide adequate warnings.
+Rule: To establish a cause of action for failure to warn, the plaintiff must show that PharmaCorp knew or should have known about the risk and failed to provide adequate warnings.
+Facts: The plaintiff, James White, experienced ketoacidosis after using the product. Medical records documented the onset of ketoacidosis shortly after beginning DiabetAid, with expert testimonies supporting a likely connection. Internal documents revealed that PharmaCorp was aware of this risk but omitted it from product warnings.
+Reasoning: The court’s decision relied on medical records, expert testimonies, and internal PharmaCorp documents, establishing a strong link between the product and ketoacidosis. The court concluded that the omission of this risk from consumer warnings was a significant breach of duty.
+Analysis: The court emphasized PharmaCorp’s duty to inform consumers of known risks. Withholding warnings about ketoacidosis, despite internal awareness, constituted a breach of duty. This omission was deemed a substantial factor in the plaintiff’s injury, satisfying the requirement for probable cause.
+Conclusion: The case is pending, with the plaintiff seeking damages of $900,000 for failure to warn and resulting health complications.

@@ -1,0 +1,54 @@
+
+Patent Title: Selective Cholesterol Absorption Inhibitor for Cardiovascular Health
+
+Patent ID: PAT009
+
+Filing Date: May 15, 2022
+Approval Date: October 20, 2023
+Expiration Date: October 20, 2043
+Estimated Value: $180,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention relates to a selective cholesterol absorption inhibitor, designed to reduce dietary cholesterol uptake in the intestines. Hypercholesterolemia, or high blood cholesterol, is a significant risk factor for cardiovascular diseases such as atherosclerosis, heart attacks, and strokes. Current treatments often include statins, which reduce cholesterol synthesis in the liver, and non-selective absorption inhibitors that can block the uptake of various lipids. However, these treatments may c...
+
+This invention addresses these challenges by selectively inhibiting the absorption of cholesterol at the site of intestinal uptake, specifically targeting cholesterol transport proteins involved in absorption. This selectivity enables a reduction in blood cholesterol levels with fewer side effects and improved patient adherence.
+
+Summary of the Invention
+
+The invention is a selective cholesterol absorption inhibitor that targets and blocks the Niemann-Pick C1-like 1 (NPC1L1) protein, a key receptor involved in cholesterol uptake in the intestines. By specifically inhibiting NPC1L1, the compound reduces the absorption of dietary cholesterol without affecting the absorption of other essential nutrients or causing gastrointestinal discomfort.
+
+The compound is formulated as an oral tablet, designed for daily use. The selective binding to NPC1L1 ensures a focused reduction in cholesterol levels, thereby decreasing LDL cholesterol in the bloodstream and lowering cardiovascular risk. The invention improves cholesterol management for patients with hypercholesterolemia who may not fully benefit from traditional statin therapy alone.
+
+Detailed Description of the Invention
+
+The selective cholesterol absorption inhibitor in this invention is a compound that binds specifically to NPC1L1 receptors in the small intestine, preventing cholesterol molecules from entering enterocytes, or intestinal cells, where they would otherwise be absorbed into the bloodstream. The compound’s molecular structure is optimized for NPC1L1 receptor binding, incorporating a hydrophobic tail that allows it to interact with the cholesterol-binding site while maintaining stability in the gastrointestinal t...
+
+The inhibitor is formulated as an enteric-coated tablet to ensure it remains intact until reaching the small intestine. This coating prevents premature release in the stomach, enhancing the compound’s effectiveness by delivering it directly to the site of cholesterol absorption. Additional stabilizers are included in the formulation to protect the active compound from degradation in the acidic environment of the stomach.
+
+The compound undergoes a slow-release process, allowing gradual inhibition of cholesterol absorption throughout the small intestine. This sustained action reduces blood LDL-C levels without the risk of rapid peaks or fluctuations in drug activity. The enteric coating also minimizes gastrointestinal irritation, providing a well-tolerated treatment for daily use.
+
+Experimental Data and Clinical Studies
+
+In clinical trials, this selective cholesterol absorption inhibitor demonstrated a 25% reduction in LDL-C levels among patients with hypercholesterolemia over a 12-week period. The study involved 500 participants and compared the inhibitor with a placebo and a non-selective absorption inhibitor. Patients taking the selective inhibitor reported fewer gastrointestinal side effects, such as bloating and discomfort, compared to those on non-selective inhibitors.
+
+Pharmacokinetic studies indicated that the enteric-coated formulation achieved effective concentrations in the small intestine, with minimal systemic absorption. This targeted approach allowed patients to benefit from cholesterol reduction without significant changes to their overall lipid profiles, including triglycerides and HDL levels.
+
+Claims
+
+Claim 1: A selective cholesterol absorption inhibitor comprising a compound that targets NPC1L1 receptors in the small intestine to block cholesterol uptake.
+
+Claim 2: The inhibitor according to Claim 1, formulated with an enteric coating to ensure release in the small intestine, where cholesterol absorption occurs.
+
+Claim 3: The method of reducing blood cholesterol levels by administering the selective cholesterol absorption inhibitor, thereby decreasing LDL-C levels and lowering cardiovascular risk.
+
+Claim 4: The process for manufacturing a selective cholesterol absorption inhibitor, involving enteric coating, compound stabilization, and tablet formulation for oral administration.
+
+Conclusion
+
+This selective cholesterol absorption inhibitor presents a novel approach to managing hypercholesterolemia by focusing on cholesterol absorption pathways. By specifically targeting NPC1L1 receptors in the small intestine, the invention reduces dietary cholesterol uptake without adverse effects on other lipid or nutrient absorption. This innovation holds potential as a safer, more effective option for patients requiring cholesterol management, aligning with the need for targeted cardiovascular therapeutics.
+
+---
+

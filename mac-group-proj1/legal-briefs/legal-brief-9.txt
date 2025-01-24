@@ -1,0 +1,10 @@
+Case Title: Richard Harris vs. PharmaCorp Case Number: 2023-CV-009
+Date Filed: July 18, 2023 Court: Superior Court of Pennsylvania Plaintiff: Richard Harris Defendant: PharmaCorp
+Procedural History: The trial court found probable cause to proceed with the lawsuit. The district court upheld this decision, and the case is currently pending.
+Issue: The primary legal issue is whether PharmaCorp failed to warn about the risk of gastrointestinal bleeding associated with their product, DiabetAid.
+Holding: The court found sufficient evidence to support the claim that the product caused gastrointestinal bleeding.
+Rule: To establish a cause of action for failure to warn, the plaintiff must demonstrate that PharmaCorp knew or should have known about the risk of gastrointestinal bleeding and failed to provide adequate warnings.
+Facts: The plaintiff, Richard Harris, experienced gastrointestinal bleeding after using the product. Medical records documented the onset of bleeding shortly after beginning DiabetAid, and expert testimonies suggested a likely connection. Internal documents indicated PharmaCorp was aware of this risk but chose to exclude it from warnings to prevent deterring customers.
+Reasoning: The court’s decision relied on medical records, expert testimonies, and PharmaCorp’s internal documents. These sources supported a link between the product and gastrointestinal bleeding, while internal documents showed PharmaCorp’s decision to withhold this risk. The court concluded that the failure to warn was a substantial factor in causing the plaintiff's injury.
+Analysis: The court’s analysis focused on PharmaCorp’s duty of care in informing consumers of known risks. The decision to withhold warnings about gastrointestinal bleeding constituted a breach of this duty. This omission was considered a major factor in the plaintiff’s injury, meeting the requirement for probable cause.
+Conclusion: The case is pending, with the plaintiff seeking $800,000 in damages for failure to warn and resulting health complications.

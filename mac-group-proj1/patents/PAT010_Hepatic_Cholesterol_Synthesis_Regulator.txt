@@ -1,0 +1,56 @@
+
+Patent Title: Hepatic Cholesterol Synthesis Regulator for Cardiovascular Health
+
+Patent ID: PAT010
+
+Filing Date: August 30, 2023
+Approval Date: June 15, 2024
+Expiration Date: June 15, 2044
+Estimated Value: $220,000,000.00
+
+---
+
+Background of the Invention
+
+The present invention relates to a hepatic cholesterol synthesis regulator, designed to reduce cholesterol production in the liver. Elevated cholesterol levels are a leading risk factor for cardiovascular diseases, including atherosclerosis, heart attacks, and strokes. Statins, which inhibit the HMG-CoA reductase enzyme, are the most commonly prescribed treatment to lower cholesterol levels by reducing hepatic cholesterol synthesis. However, statins are associated with adverse effects, including muscle pa...
+
+This invention addresses the need for a more selective approach to reducing cholesterol synthesis within the liver, minimizing systemic side effects while maintaining efficacy in lowering LDL cholesterol levels. The hepatic cholesterol synthesis regulator described in this invention provides an alternative to statins, offering an innovative mechanism that selectively modulates cholesterol production in the liver.
+
+Summary of the Invention
+
+The invention is a hepatic cholesterol synthesis regulator designed to inhibit key enzymes in the cholesterol biosynthesis pathway within the liver. Unlike statins, which act broadly, this compound selectively inhibits enzymes downstream from HMG-CoA reductase, thereby reducing cholesterol synthesis with lower incidence of adverse effects. The compound targets squalene synthase, an enzyme specifically involved in cholesterol biosynthesis, while avoiding pathways associated with coenzyme Q10 synthesis.
+
+Formulated as an oral tablet for daily use, the hepatic cholesterol synthesis regulator provides a targeted approach to managing hypercholesterolemia. The selective inhibition of hepatic enzymes effectively lowers LDL cholesterol levels without causing significant changes to triglycerides or HDL cholesterol.
+
+Detailed Description of the Invention
+
+The hepatic cholesterol synthesis regulator described in this invention acts by selectively inhibiting squalene synthase, a critical enzyme in the cholesterol biosynthesis pathway. The inhibitor binds competitively to the active site of squalene synthase, preventing the formation of squalene, a precursor in cholesterol synthesis. By targeting this specific enzyme, the compound minimizes off-target effects and provides a controlled reduction in hepatic cholesterol production.
+
+The molecular structure of the inhibitor is designed to maximize hepatic uptake, utilizing a lipid-soluble core that facilitates transport into liver cells. The compound is formulated as an oral tablet with a controlled-release matrix, allowing for gradual absorption in the gastrointestinal tract. This controlled-release mechanism provides consistent blood levels of the inhibitor, reducing fluctuations in hepatic enzyme activity.
+
+The oral formulation includes a stabilizing buffer to maintain the compound’s stability and bioavailability. The inhibitor is metabolized primarily within the liver, ensuring that its action is localized to the hepatic environment. This localization minimizes systemic exposure, reducing the risk of muscle-related side effects that are often associated with statin therapy.
+
+The manufacturing process of this invention involves organic synthesis techniques to ensure the purity and stability of the compound. The compound is further stabilized with antioxidants to prevent oxidative degradation during storage.
+
+Experimental Data and Clinical Studies
+
+Clinical trials were conducted to evaluate the efficacy and safety of this hepatic cholesterol synthesis regulator in patients with hypercholesterolemia. A 16-week study with 450 patients showed a 30% reduction in LDL-C levels compared to a placebo. The compound demonstrated high specificity for hepatic cholesterol synthesis without affecting levels of coenzyme Q10, a common side effect in statin therapy.
+
+Pharmacokinetic studies revealed that the controlled-release formulation provided steady-state blood concentrations within 6 hours of administration, maintaining therapeutic levels for 24 hours. Adverse effects were minimal, with no significant reports of muscle pain or liver enzyme elevation, highlighting the compound’s improved safety profile.
+
+Claims
+
+Claim 1: A hepatic cholesterol synthesis regulator comprising a selective inhibitor of squalene synthase, designed to reduce cholesterol synthesis in the liver.
+
+Claim 2: The regulator according to Claim 1, formulated with a controlled-release matrix for gradual absorption in the gastrointestinal tract, enhancing hepatic uptake.
+
+Claim 3: The method of managing hypercholesterolemia by administering the hepatic cholesterol synthesis regulator to lower LDL cholesterol without affecting coenzyme Q10 levels.
+
+Claim 4: The process for manufacturing a hepatic cholesterol synthesis regulator, involving organic synthesis, stabilization, and formulation into an oral controlled-release tablet.
+
+Conclusion
+
+This hepatic cholesterol synthesis regulator provides a targeted approach to lowering cholesterol levels by selectively inhibiting enzymes in the cholesterol biosynthesis pathway. By focusing its action within the liver, this invention offers a safer alternative to traditional statin therapies, reducing adverse effects while effectively managing cardiovascular risk. This innovation represents a significant advancement in the field of cholesterol management and cardiovascular health.
+
+---
+
